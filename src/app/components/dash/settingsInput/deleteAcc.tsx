@@ -21,17 +21,16 @@ export default function DeletAccount() {
       <p className="w-1/2 text-xs p-2">
         You are about to delete your account permanetly.
       </p>
-      <h1 className="font-semibold m-2">Are Sure!</h1>
+      <h1 className="font-semibold m-2">Are you Sure!</h1>
 
       <button
-        className="p-1 m-1 md:m-2 border-2 border-white w-fit h-fit bg-red-400 text-sm md:text-lg text-white rounded-sm cursor-pointer"
-        style={{
-          boxShadow: "1px 1px 5px black",
-          textShadow: "1px 1px 3px black",
-        }}
+       className="p-2 w-[12%] text-white bg-red-400 rounded-md m-2 cursor-pointer"
+      style={{
+        boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey"
+      }}
         onClick={() => DeleteAccount(navigate.push)}
       >
-        Yes i am
+        Yes
       </button>
     </div>
   );

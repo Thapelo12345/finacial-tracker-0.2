@@ -2,9 +2,9 @@ import ImageKit from "imagekit";
 import { NextRequest } from "next/server";
 
 const imagekit = new ImageKit({
-    publicKey: process.env.NEXT_PUBLIC_KEY as string,
-    privateKey: process.env.NEXT_PUBLIC_PRIVATE_KEY as string,
-    urlEndpoint: process.env.NEXT_PUBLIC_URL_END_POINT as string,
+    publicKey: process.env.IMAGEKIT_PUBLIC_KEY as string,
+    privateKey: process.env.IMAGEKIT_PRIVATE_KEY as string,
+    urlEndpoint: process.env.IMAGEKIT_PUBLIC_URL_END_POINT as string,
 });
 
 export async function DELETE(request: NextRequest) {

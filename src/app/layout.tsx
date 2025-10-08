@@ -1,4 +1,6 @@
+import DialogContainer from "./dialogs/dialogContainer";
 import "./globals.css";
+import { ReduxProvider } from "./state management/store/Providers";
 
 export default function RootLayout({
   children,
@@ -8,9 +10,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className="bg-red-100"
+        className="relative bg-red-100"
       >
+        <ReduxProvider>
+          <DialogContainer />
         {children}
+        </ReduxProvider>
       </body>
     </html>
   );

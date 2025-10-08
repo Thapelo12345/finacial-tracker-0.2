@@ -1,3 +1,4 @@
+"use client"
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";

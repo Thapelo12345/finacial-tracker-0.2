@@ -3,6 +3,7 @@
 import SettingsHeader from "@/app/ui/settingsHeader/header";
 import { UserIcon } from "@heroicons/react/20/solid";
 import { useState, useRef } from "react";
+import { motion } from "framer-motion";
 import {
   ImageKitAbortError,
   ImageKitInvalidRequestError,
@@ -10,7 +11,6 @@ import {
   ImageKitUploadNetworkError,
   upload,
 } from "@imagekit/next";
-
 import { db } from "../../../../../firebase.config";
 import { getDocs, collection, updateDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
@@ -50,7 +50,8 @@ export default function UploadImages() {
   }; //end of authenticator function
 
   const deleteImage = async (fieldId: string) => {
-    if (fieldId === "") {
+    console.log(fieldId)
+    if (fieldId === "" || fieldId === undefined) {
       return "procced";
     } else {
       const deletion = await fetch(`/api/imageDelete?fieldId=${fieldId}`, {
@@ -94,14 +95,13 @@ export default function UploadImages() {
     // Call the ImageKit SDK upload function with the required parameters and callbacks.
     try {
       const data = sessionStorage.getItem("currentUser");
-      if (!data) {
-        throw new Error("use Credentials not found");
-      }
-      const user = JSON.parse(data);
 
+      if (!data) {throw new Error("use Credentials not found");}
+
+      const user = JSON.parse(data);
       const validate = await deleteImage(user.imageId);
 
-      console.log(validate)
+      console.log(validate);
       if (validate === "procced" || validate === "success") {
         const uploadResponse = await upload({
           // Authentication parameters
@@ -111,7 +111,7 @@ export default function UploadImages() {
           publicKey,
           file,
           fileName: file.name, // Optionally set a custom file name
-          folder: "/Expense_tracker_profile_images",
+          folder: `/Expense_tracker_profile_images`,
           onProgress: (event) => {
             setProgress((event.loaded / event.total) * 100);
           },
@@ -145,10 +145,10 @@ export default function UploadImages() {
         });
       } //end of valid if
       else {
-        user.avatar = ""
-        sessionStorage.setItem("currentUser", JSON.stringify(user))
-        dispatch(getMessage("Network Error. Please Try again"))
-        dispatch(selectDialog("error"))
+        user.avatar = "";
+        sessionStorage.setItem("currentUser", JSON.stringify(user));
+        dispatch(getMessage("Network Error. Please Try again"));
+        dispatch(selectDialog("error"));
       }
     } catch (error) {
       // Handle specific error types provided by the ImageKit SDK.
@@ -194,12 +194,16 @@ export default function UploadImages() {
         }}
       />
       {/* Button to trigger the upload process */}
-      <button type="button" onClick={handleUpload}>
+      <button
+        className="p-2 w-fit text-white bg-green-400 rounded-md m-2 cursor-pointer"
+        style={{
+          boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey",
+        }}
+        type="button"
+        onClick={handleUpload}
+      >
         Upload file
       </button>
-      <br />
-      {/* Display the current upload progress */}
-      <progress className="bg-blue-500" value={progress} max={100}></progress>
     </div>
   );
 }

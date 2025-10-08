@@ -115,13 +115,22 @@ export default function TransactionSubmit() {
         <div className="flex flex-row items-center justify-evenly w-full p-2">
           <button
             type="submit"
-            className="text-green-700 font-medium p-2 w-fit rounded-sm cursor-pointer"
+            // className="text-green-700 font-medium p-2 w-fit rounded-sm cursor-pointer"
+            className="p-2 text-white font-medium bg-green-400 rounded-sm m-2 cursor-pointer"
+      style={{
+        boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey"
+      }}
           >
             Submitt
           </button>
 
           <button
-            className="text-red-700 font-medium p-2 w-fit rounded-sm cursor-pointer"
+            // className="text-red-700 font-medium p-2 w-fit rounded-sm cursor-pointer"
+            className="p-2 text-white font-medium bg-red-400 rounded-sm m-2 cursor-pointer"
+      style={{
+        boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey"
+      }}
+            
             type="button"
             onClick={() => dispatch(onOffSubmit())}
           >

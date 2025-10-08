@@ -31,7 +31,13 @@ export default function EditName() {
           required
         ></input>
 
-        <button type="submit">update</button>
+        <button 
+        className="p-2 text-white bg-green-400 rounded-md m-2 cursor-pointer"
+      style={{
+        boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey"
+      }}
+        type="submit"
+        >update</button>
       </form>
     </div>
   );

@@ -8,6 +8,7 @@ import { handleGooglAthentication } from "@/app/functions/authFunctions/googleLo
 import EmailAuthentication from "@/app/functions/authFunctions/emailLogIn";
 import gsap from "gsap";
 import { useRouter } from 'next/navigation';
+import Image from "next/image";
 // import { useNavigate } from "react-router-dom";
 
 export default function AuthenticationForm() {
@@ -95,19 +96,24 @@ export default function AuthenticationForm() {
           : "Create account with social media "}
       </label>
 
-      <div className="w-20 h-20 flex flex-row items-center justify-center">
+      <div className="w-1/2 h-20 flex flex-row items-center justify-center">
         <button
-          className="text-lg rounded-lg text-black m-2 p-2"
+          className=" flex flex-row w-50 cursor-pointer text-xs rounded-lg text-black m-2 p-2"
           type="button"
           onClick={handleGoogleAuthClick}
         >
-          {/* <SiGoogle className="w-7 h-7" color="4285F4" /> */}
-          <img
-            className="w-full h-full"
+          <Image
+            className="w-8 h-8"
             alt="Google Icon"
-            // src="assets/google-image.png"
             src="/google-image.png"
-          ></img>
+            width={32}
+            height={32}
+            priority
+          />
+          {/* ></img>
+        <span className="m-2">
+          sign in with google
+        </span> */}
         </button>
       </div>
 

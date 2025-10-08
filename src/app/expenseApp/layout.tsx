@@ -1,7 +1,5 @@
 "use client"
-import store from "../state management/store";
-import DialogContainer from "../dialogs/dialogContainer";
-import { Provider } from "react-redux";
+// import DialogContainer from "../dialogs/dialogContainer";
 export default function ExpenseApp(
     {
   children,
@@ -13,10 +11,8 @@ export default function ExpenseApp(
         <div
          className="relative z-10 w-screen h-screen"
          >
-          <Provider store={store}>
-            <DialogContainer />
+            {/* <DialogContainer /> */}
             { children}
-            </Provider>
          </div>
     )
 }

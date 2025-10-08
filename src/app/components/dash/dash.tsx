@@ -2,12 +2,17 @@
 import DashAvatar from "./dashAvatar";
 import DashNav from "./dashNav";
 import Settings from "./settings";
+import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/20/solid";
 import { SettingsContext } from "@/app/context/settingsContext";
 import { useEffect, useState, useContext } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/app/state management/store";
+import { useRouter } from "next/navigation";
+import { SignOut } from "@/app/functions/authFunctions/signOut";
 
 export default function Dash() {
+  const navigate = useRouter()
+
   const checkUpdate = useSelector(
     (state: RootState) => state.updateApp.updateApp
   );
@@ -29,9 +34,11 @@ export default function Dash() {
     }
   }, [checkUpdate]);
 
+  const handleSignOut = ()=>{SignOut(navigate.push)}
+
   return (
     <header
-      className={`w-[190px] h-full m-0 rounded-tr-lg rounded-br-lg items-center z-50 overflow-y-auto overflow-x-hidden`}
+      className={`relative w-[190px] h-full m-0 rounded-tr-lg rounded-br-lg items-center z-50 overflow-y-auto overflow-x-hidden`}
       style={{
         backgroundColor: "rgba(0, 0, 0, 0.9)",
       }}
@@ -48,8 +55,14 @@ export default function Dash() {
         <DashNav />
         <Settings />
       </div>
-      {/* {settings.currentValue && <Settings />}
-      {!settings.currentValue && <DashNav />} */}
+
+      <button 
+      className="flex flex-row w-fit absolute bottom-[2%] left-10 text-xs font-semibold text-white p-1 rounded-lg"
+      onClick={handleSignOut}
+      >
+        Sign out
+        <ArrowRightStartOnRectangleIcon className="w-4 h-4 text-white ml-4 font-light cursor-pointer" />
+      </button>
     </header>
   );
 }
