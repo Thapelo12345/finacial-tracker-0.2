@@ -5,6 +5,7 @@ import type { RootState } from "../state management/store";
 import Loanding from "./loadingDialog";
 import ConfirmDialog from "./confirmationDialog";
 import WarningDialog from "./warningDialog";
+import DeletionPasswaord from "./deletionPassword";
 
 export default function DialogContainer() {
   const selectDialog = useSelector(
@@ -31,10 +32,13 @@ export default function DialogContainer() {
       className={`${
         showDialog ? "block" : "hidden"
       } absolute top-0 left-0 flex items-center justify-center w-screen h-screen bg-black/70 z-40`}
+      // className="absolute top-0 left-0 flex items-center justify-center w-screen h-screen bg-black/70 z-40"
     >
       {useDialog === "load" && <Loanding />}
       {useDialog === "confirm" && <ConfirmDialog />}
       {useDialog === "error" && <WarningDialog />}
+      {useDialog === "deletePassword" && <DeletionPasswaord />}
+      {/* <DeletionPasswaord /> */}
     </div>
   );
 }

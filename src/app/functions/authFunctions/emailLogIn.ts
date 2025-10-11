@@ -65,7 +65,6 @@ export default async function EmailAuthentication({
         const querySnapshot2 = await getDocs(
           query(usersCollection, where("email", "==", email))
         );
-        console.log(querySnapshot2.empty);
 
         if (querySnapshot2.empty) {
           const createNewUser = await createUserWithEmailAndPassword(
@@ -97,7 +96,8 @@ export default async function EmailAuthentication({
             };
 
             const finalUser = await addDoc(collection(db, "users"), newUser);
-
+            // const userDoc = await getDoc(doc(db, "users", userId));
+            
             if (finalUser) {
               store.dispatch(selectDialog("confirm"));
               store.dispatch(getMessage("Your Account has been created"));

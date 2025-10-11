@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 import LabelInput from "@/app/ui/logInForm/labelInput";
@@ -7,7 +7,7 @@ import { useGSAP } from "@gsap/react";
 import { handleGooglAthentication } from "@/app/functions/authFunctions/googleLogIn";
 import EmailAuthentication from "@/app/functions/authFunctions/emailLogIn";
 import gsap from "gsap";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 // import { useNavigate } from "react-router-dom";
 
@@ -43,6 +43,7 @@ export default function AuthenticationForm() {
     <form
       onSubmit={(e) => {
         e.preventDefault();
+        
         EmailAuthentication({
           registerLogIn: formState,
           email,
@@ -51,6 +52,9 @@ export default function AuthenticationForm() {
           userName: username,
           NavigateFunction: navigate.push,
         });
+        if(formState === "register"){
+          setForm("logIn")
+        }
       }}
       id="formAnimation"
       className="backface-hidden bg-[whitesmoke] shadow-2xl shadow-black flex flex-col items-center rounded-lg justify-center border-2 border-white w-full sm:w-1/2 p-2 m-2"
@@ -90,11 +94,6 @@ export default function AuthenticationForm() {
       )}
 
       {/* socila media log in */}
-      <label className="text-black text-xs m-2">
-        {formState === "logIn"
-          ? "Log In with your social media account"
-          : "Create account with social media "}
-      </label>
 
       <div className="w-1/2 h-20 flex flex-row items-center justify-center">
         <button
@@ -110,10 +109,7 @@ export default function AuthenticationForm() {
             height={32}
             priority
           />
-          {/* ></img>
-        <span className="m-2">
-          sign in with google
-        </span> */}
+          <span className="m-2 text-xs">Log in with google acc</span>
         </button>
       </div>
 

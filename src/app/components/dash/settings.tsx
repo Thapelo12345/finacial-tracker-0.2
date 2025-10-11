@@ -9,8 +9,8 @@ import { useContext, useState, useEffect } from "react";
 import { SettingsContext } from "@/app/context/settingsContext";
 
 export default function Settings() {
+  
   const settings = useContext(SettingsContext);
-
   const [active, setActive] = useState(settings.clicked);
 
   useEffect(() => {

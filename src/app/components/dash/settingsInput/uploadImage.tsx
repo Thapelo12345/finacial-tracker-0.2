@@ -50,7 +50,7 @@ export default function UploadImages() {
   }; //end of authenticator function
 
   const deleteImage = async (fieldId: string) => {
-    console.log(fieldId)
+    
     if (fieldId === "" || fieldId === undefined) {
       return "procced";
     } else {
