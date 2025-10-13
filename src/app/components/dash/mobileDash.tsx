@@ -11,6 +11,7 @@ import {
   ReceiptRefundIcon,
   ChevronDoubleUpIcon,
   ChevronDoubleDownIcon,
+  ArrowRightStartOnRectangleIcon,
 } from "@heroicons/react/20/solid";
 import MobileSettings from "./mobileSettings";
 
@@ -70,7 +71,7 @@ export default function MobileDash() {
         <MobileSettings />
 
         <button
-          className="text-white m-1 bg-black/90 p-2 absolute left-0 bottom-13 rounded-sm z-20"
+          className="text-white m-1 bg-black/90 p-2 absolute left-0 bottom-8 rounded-sm z-20"
           onClick={() => {
             settings.setSettingsInput(!settings.settingsInput);
             settings.setClicked("updateImage");
@@ -83,6 +84,12 @@ export default function MobileDash() {
           {settings.currentValue && (
             <ChevronDoubleDownIcon className="font-semibold w-4 h-4" />
           )}
+        </button>
+
+        <button
+          className="text-white bg-black/90 m-1 p-1 absolute right-0 bottom-8 rounded-sm z-20"
+        >
+       <ArrowRightStartOnRectangleIcon className="w-5 h-5"/>
         </button>
       </nav>
     </header>

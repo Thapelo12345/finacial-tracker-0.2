@@ -1,11 +1,14 @@
 "use client"
 import SettingsHeader from "@/app/ui/settingsHeader/header";
 import { UserIcon } from "@heroicons/react/20/solid";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { SettingsContext } from "@/app/context/settingsContext";
 import UpdateUserName from "@/app/functions/settingsFunctions/updateUsername";
 
 export default function EditName() {
+  const setting = useContext(SettingsContext)
   const [username, setUserName] = useState("");
+  
   return (
     <div className="flex flex-col border-4 border-black/20 items-center w-full h-full bg-[whitesmoke] rounded-sm">
       <SettingsHeader title="edit username" />
@@ -18,6 +21,7 @@ export default function EditName() {
         onSubmit={(e) => {
           e.preventDefault();
           UpdateUserName(username);
+          setting.closeSettings(!setting.currentValue);
         }}
       >
         <input

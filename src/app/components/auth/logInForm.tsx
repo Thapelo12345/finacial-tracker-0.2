@@ -95,14 +95,14 @@ export default function AuthenticationForm() {
 
       {/* socila media log in */}
 
-      <div className="w-1/2 h-20 flex flex-row items-center justify-center">
+      <div className=" w-full sm:w-1/2 h-20 flex flex-row items-center justify-center">
         <button
-          className=" flex flex-row w-50 cursor-pointer text-xs rounded-lg text-black m-2 p-2"
+          className="flex flex-row w-fit md:w-50 cursor-pointer text-xs rounded-lg text-black m-2 p-2"
           type="button"
           onClick={handleGoogleAuthClick}
         >
           <Image
-            className="w-8 h-8"
+            className=" w-6 h-6 md:w-8 md:h-8"
             alt="Google Icon"
             src="/google-image.png"
             width={32}

@@ -97,6 +97,7 @@ export async function handleGooglAthentication(navigate: NavigateFunction) {
     }, 7000);
   } catch (error) {
     console.log(error);
+    store.dispatch(openCloseDialog())
     alert(error);
   }
 } //end of google auth function

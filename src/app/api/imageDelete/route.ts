@@ -16,7 +16,7 @@ export async function DELETE(request: NextRequest) {
 
     // Add your ImageKit deletion logic here
     const response = await imagekit.deleteFile(fieldId);
-    
+    console.log(response)
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }

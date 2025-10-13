@@ -2,7 +2,7 @@
 
 import SettingsHeader from "@/app/ui/settingsHeader/header";
 import { UserIcon } from "@heroicons/react/20/solid";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { motion } from "framer-motion";
 import {
   ImageKitAbortError,
@@ -18,8 +18,10 @@ import { selectDialog } from "@/app/state management/selectDialog";
 import { openCloseDialog } from "@/app/state management/openCloseDialog";
 import { getMessage } from "@/app/state management/dialogMessage";
 import { appUpdated } from "@/app/state management/UpdateAllComponents";
+import { SettingsContext } from "@/app/context/settingsContext";
 
 export default function UploadImages() {
+  const setting = useContext(SettingsContext)
   const dispatch = useDispatch();
   const [progress, setProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -50,7 +52,7 @@ export default function UploadImages() {
   }; //end of authenticator function
 
   const deleteImage = async (fieldId: string) => {
-    
+    console.log(fieldId)
     if (fieldId === "" || fieldId === undefined) {
       return "procced";
     } else {
@@ -60,7 +62,7 @@ export default function UploadImages() {
           "Content-Type": "application/json",
         },
       });
-
+      console.log(deletion.status)
       return deletion.status === 200 ? "success" : "failed";
     }
   };
@@ -146,6 +148,7 @@ export default function UploadImages() {
       } //end of valid if
       else {
         user.avatar = "";
+        user.imageId = ""
         sessionStorage.setItem("currentUser", JSON.stringify(user));
         dispatch(getMessage("Network Error. Please Try again"));
         dispatch(selectDialog("error"));
@@ -171,6 +174,7 @@ export default function UploadImages() {
       }
       dispatch(selectDialog("error"));
     }
+    setting.closeSettings(!setting.currentValue);
   };
 
   return (
