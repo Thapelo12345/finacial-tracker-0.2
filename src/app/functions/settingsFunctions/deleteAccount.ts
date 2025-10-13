@@ -59,16 +59,14 @@ async function DeleteAccount(navigate: NavigateFunction) {
   try {
     const data = sessionStorage.getItem("currentUser");
 
-    if (!data) {
-      throw new Error("user credentials not found");
-    }
+    if (!data) {throw new Error("user credentials not found");}
     const user1 = JSON.parse(data);
 
     //first checker user log in register
 
     const userAuth = await waitForUser()
-    console.log(userAuth)
     if (!userAuth) {throw new Error("No authenticated user found");}
+    
     if (requiresReauth(userAuth)) {
       store.dispatch(selectDialog("deletePassword"));
      await inputsRecieved()

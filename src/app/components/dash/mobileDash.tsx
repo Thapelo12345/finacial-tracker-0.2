@@ -3,6 +3,7 @@ import MobileLinks from "@/app/ui/buttons/mobileLinks";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useContext } from "react";
 import { SettingsContext } from "@/app/context/settingsContext";
+import MobileAvatar from "@/app/ui/mobileAvatar";
 import {
   HomeIcon,
   ArrowsUpDownIcon,
@@ -14,17 +15,38 @@ import {
   ArrowRightStartOnRectangleIcon,
 } from "@heroicons/react/20/solid";
 import MobileSettings from "./mobileSettings";
+import { SignOut } from "@/app/functions/authFunctions/signOut";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/app/state management/store";
 
 export default function MobileDash() {
+  const navigate = useRouter()
   const settings = useContext(SettingsContext);
+   const checkUpdate = useSelector(
+    (state: RootState) => state.updateApp.updateApp
+  );
 
   const location = usePathname();
   const currentUrl = location;
   const [currentPage, setCurrentPage] = useState("/");
+  const [name , setName] = useState("User not found!")
+  const [pic, setPic] = useState("")
 
   useEffect(() => {
     setCurrentPage(currentUrl);
   }, [currentUrl]);
+
+  useEffect(()=>{
+    const data = sessionStorage.getItem("currentUser")
+    if(data){
+      const user = JSON.parse(data)
+      setName(user.name)
+      setPic(user.avatar)
+    }
+  }, [checkUpdate])
+
+  const handleSignOut = ()=>{SignOut(navigate.push)}
 
   return (
     <header
@@ -69,6 +91,10 @@ export default function MobileDash() {
         />
 
         <MobileSettings />
+        <MobileAvatar name={name} avatar={pic} />
+
+        {/* <div className="bg-blue-400 w-8 h-8 absolute left-[40px] bottom-9 rounded-sm z-20"> */}
+        {/* </div> */}
 
         <button
           className="text-white m-1 bg-black/90 p-2 absolute left-0 bottom-8 rounded-sm z-20"
@@ -88,6 +114,7 @@ export default function MobileDash() {
 
         <button
           className="text-white bg-black/90 m-1 p-1 absolute right-0 bottom-8 rounded-sm z-20"
+          onClick={handleSignOut}
         >
        <ArrowRightStartOnRectangleIcon className="w-5 h-5"/>
         </button>

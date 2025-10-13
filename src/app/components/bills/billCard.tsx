@@ -153,7 +153,7 @@ export default function BillCard({
         value={{ statusTheme: status, headColor: color, setTheme: setStatus }}
       >
         <motion.div
-          className="bill-card relative flex flex-col m-2 w-[90%] sm:max-w-100 p-1 rounded-lg"
+          className="bill-card relative flex flex-col m-2 w-full sm:max-w-100 p-1 rounded-lg"
           style={{
             backgroundColor: "whitesmoke",
             boxShadow: `1px 1px 5px black`,
