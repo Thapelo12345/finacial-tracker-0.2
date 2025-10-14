@@ -28,6 +28,13 @@ export default function SettingsContainer() {
     }
   }, []); // Empty array ensures effect runs only on mount and unmount
 
+  const slide = ()=>{
+    return windowWidth > 768 ? "translateX(200px)" : "translateX(10px)"
+  }
+  const slideBack = () => {
+        return windowWidth > 768 ? "translateX(-400px)" : "translateX(0)"
+  }
+
   return (
     <div
       className={`
@@ -41,13 +48,10 @@ export default function SettingsContainer() {
         className={`w-[95%] md:w-100 duration-500 rounded-sm shadow-2xl h-auto bg-[whitesmoke] z-10 ${
           windowWidth > 768 ? "mt-40" : "mt-10" // Use state variable
         }`}
-        style={{
-          transform: settings.settingsInput
-            ? windowWidth > 768
-              ? "translateX(200px)"
-              : "translateX(10px)"
-            : "translateX(-400px)",
-        }}
+      
+       style={{
+        transform : settings.settingsInput ? slide() : slideBack()
+       }}
       >
         {settings.clicked === "updateName" && <EditName />}
         {settings.clicked === "updateImage" && <UploadImages />}
