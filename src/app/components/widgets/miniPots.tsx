@@ -32,7 +32,7 @@ export default function MiniPots({animate}:Prop) {
     <div className={`bg-white w-full m-0 sm:m-4 p-2 hover:shadow-2xl rounded-lg ${animate}`}>
       <div className="flex flex-row justify-between">
         <MiniHeader title={"Pots"} />
-        <MiniDetailsBtn pageUrl="/home/pots"/>
+        <MiniDetailsBtn pageUrl="/expenseApp/dashBoard/pots"/>
       </div>
 
       <div className="h-40 flex flex-row">

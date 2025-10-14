@@ -36,7 +36,7 @@ export default function MiniBudget({ animate }: Prop) {
     <div className={`w-[95%] h-[60%] bg-white rounded-lg ${animate} m-2 mb-4`}>
       <div className="flex flex-row justify-between">
         <MiniHeader title={"Budget"} />
-        <MiniDetailsBtn pageUrl="/home/budget"/>
+        <MiniDetailsBtn pageUrl="/expenseApp/dashBoard/budget"/>
       </div>
 
       <div className="flex flex-col lg:flex-row w-full h-full">

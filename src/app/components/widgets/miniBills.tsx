@@ -74,7 +74,7 @@ export default function MiniBills({ animate }: Prop) {
     <div className={`w-full bg-white m-2 rounded-lg ${animate}`}>
       <div className="flex flex-row justify-between">
         <MiniHeader title={"Recurring Bills"} />
-        <MiniDetailsBtn pageUrl="/home/bills" />
+        <MiniDetailsBtn pageUrl="/expenseApp/dashBoard/recurringBills" />
       </div>
 
       <div className="flex flex-col w-full p-2">
