@@ -26,7 +26,7 @@ export default function SubmitContainer() {
     <div
       className={`${
         open ? "block" : "hidden"
-      } absolute w-screen h-screen bg-black/70 z-40 overflow-hidden`}
+      } flex items-center justify-center absolute top-0 left-0 w-screen h-screen bg-black/70 z-40 overflow-hidden`}
     >
       {selectedForm1 === "transaction" && <TransactionSubmit />}
       {selectedForm1 === "bills" && <SubmitBills />}

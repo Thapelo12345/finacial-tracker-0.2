@@ -13,8 +13,8 @@ export default function DropDown({
   setValue,
 }: Props) {
   return (
-    <div className="flex flex-col items-center justify-center w-1/2">
-      <label className="text-black/50 font-serif font-extrabold p-2 rounded-tr-lg rounded-br-lg m-2">
+    <div className="w-fit flex flex-col items-center justify-center sm:w-1/2">
+      <label className="w-fit text-black/50 font-serif font-extrabold p-2 rounded-tr-lg rounded-br-lg m-2">
         {title}
       </label>
       <select

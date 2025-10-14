@@ -48,7 +48,7 @@ function getInitials(name: string): string {
 export default function MobileAvatar({ name, avatar }: Props) {
   return (
     <div
-      className={`bg-blue-400 w-8 h-8 p-0 absolute left-[40px] bottom-9 rounded-sm z-20 overflow-hidden
+      className={`bg-blue-400 w-8 h-8 p-0 absolute left-[40px] bottom-10 rounded-sm z-20 overflow-hidden
         ${avatar === "" ? "border-2 border-white" : "border-0"}
         `}
       style={{

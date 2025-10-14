@@ -97,7 +97,7 @@ export default function MobileDash() {
         {/* </div> */}
 
         <button
-          className="text-white m-1 bg-black/90 p-2 absolute left-0 bottom-8 rounded-sm z-20"
+          className="text-white m-1 bg-black/90 p-2 absolute left-0 bottom-9 rounded-sm z-20"
           onClick={() => {
             settings.setSettingsInput(!settings.settingsInput);
             settings.setClicked("updateImage");
@@ -113,7 +113,7 @@ export default function MobileDash() {
         </button>
 
         <button
-          className="text-white bg-black/90 m-1 p-1 absolute right-0 bottom-8 rounded-sm z-20"
+          className="text-white bg-black/90 m-1 p-1 absolute right-0 bottom-9 rounded-sm z-20"
           onClick={handleSignOut}
         >
        <ArrowRightStartOnRectangleIcon className="w-5 h-5"/>

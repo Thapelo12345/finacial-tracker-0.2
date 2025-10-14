@@ -41,9 +41,9 @@ export default function SubmitBills() {
   const [endDate, setEndDate] = useState("");
 
   return (
-    <div className="absolute w-screen h-screen overflow-y-auto z-50">
+    <div className="w-[200%] md:w-screen h-screen overflow-x-hidden overflow-y-auto z-50">
       <form
-        className="w-[70%] md:w-1/2 bg-[whitesmoke] m-auto mb-24 p-2 rounded-lg h-auto"
+        className="w-[90%] md:w-1/2 bg-[whitesmoke] m-auto mb-24 p-2 rounded-lg h-auto"
         onSubmit={(e) => {
           e.preventDefault();
           dispatch(onOffSubmit());
@@ -127,9 +127,9 @@ export default function SubmitBills() {
             type="submit"
             // className="text-green-700 font-medium p-2 w-fit rounded-sm cursor-pointer"
             className="p-2 text-white font-medium w-fit bg-green-400 rounded-md m-2 cursor-pointer"
-      style={{
-        boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey"
-      }}
+            style={{
+              boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey",
+            }}
           >
             Submitt
           </button>
@@ -137,9 +137,9 @@ export default function SubmitBills() {
           <button
             // className="text-red-700 font-medium p-2 w-fit rounded-sm cursor-pointer"
             className="p-2 text-white font-medium w-fit bg-red-400 rounded-md m-2 cursor-pointer"
-      style={{
-        boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey"
-      }}
+            style={{
+              boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey",
+            }}
             type="button"
             onClick={() => dispatch(onOffSubmit())}
           >
