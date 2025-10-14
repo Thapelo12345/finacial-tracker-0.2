@@ -38,7 +38,7 @@ export default function WarningDialog() {
   return (
     <div
       id="error"
-      className="flex flex-col items-center justify-center w-[90%] h-1/2 sm:w-1/2 sm:h-1/2 md:w-1/3 md:h-1/3 border-4 border-red-600 bg-white rounded-2xl"
+      className="flex flex-col items-center justify-center w-fit h-fit sm:w-1/2 sm:h-1/2 md:w-1/3 md:h-1/3 border-4 border-red-600 bg-white rounded-2xl"
       style={{
         boxShadow:
           "0px 10px 60px red, 1px 5px 40px black, inset 1px 0 10px red",
