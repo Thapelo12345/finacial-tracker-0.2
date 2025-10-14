@@ -10,7 +10,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className="relative bg-red-100"
+        className="relative bg-red-50"
       >
         <ReduxProvider>
           <DialogContainer />
