@@ -25,7 +25,7 @@ export default function BillCardHeader({ name, installment }: Prop) {
             boxShadow: "1px -2px 5px rgba(0, 0, 0, 0.7)",
             textShadow: "0px 0px 1px black",
             WebkitTextStrokeColor: "black",
-            WebkitTextStrokeWidth: "0.3px",
+            WebkitTextStrokeWidth: "0.1px",
           }}
         >
           R {installment}
