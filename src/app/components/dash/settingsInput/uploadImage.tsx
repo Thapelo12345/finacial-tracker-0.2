@@ -2,8 +2,7 @@
 
 import SettingsHeader from "@/app/ui/settingsHeader/header";
 import { UserIcon } from "@heroicons/react/20/solid";
-import { useState, useRef, useContext } from "react";
-import { motion } from "framer-motion";
+import { useRef, useContext } from "react";
 import {
   ImageKitAbortError,
   ImageKitInvalidRequestError,
@@ -21,9 +20,9 @@ import { appUpdated } from "@/app/state management/UpdateAllComponents";
 import { SettingsContext } from "@/app/context/settingsContext";
 
 export default function UploadImages() {
-  const setting = useContext(SettingsContext)
+  const setting = useContext(SettingsContext);
   const dispatch = useDispatch();
-  const [progress, setProgress] = useState(0);
+  // const [progress, setProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const abortController = new AbortController();
 
@@ -52,7 +51,6 @@ export default function UploadImages() {
   }; //end of authenticator function
 
   const deleteImage = async (fieldId: string) => {
-    console.log(fieldId)
     if (fieldId === "" || fieldId === undefined) {
       return "procced";
     } else {
@@ -62,7 +60,6 @@ export default function UploadImages() {
           "Content-Type": "application/json",
         },
       });
-      console.log(deletion.status)
       return deletion.status === 200 ? "success" : "failed";
     }
   };
@@ -98,12 +95,13 @@ export default function UploadImages() {
     try {
       const data = sessionStorage.getItem("currentUser");
 
-      if (!data) {throw new Error("use Credentials not found");}
+      if (!data) {
+        throw new Error("use Credentials not found");
+      }
 
       const user = JSON.parse(data);
       const validate = await deleteImage(user.imageId);
 
-      console.log(validate);
       if (validate === "procced" || validate === "success") {
         const uploadResponse = await upload({
           // Authentication parameters
@@ -114,9 +112,7 @@ export default function UploadImages() {
           file,
           fileName: file.name, // Optionally set a custom file name
           folder: `/Expense_tracker_profile_images`,
-          onProgress: (event) => {
-            setProgress((event.loaded / event.total) * 100);
-          },
+
           // Abort signal to allow cancellation of the upload if needed.
           abortSignal: abortController.signal,
         });
@@ -148,7 +144,7 @@ export default function UploadImages() {
       } //end of valid if
       else {
         user.avatar = "";
-        user.imageId = ""
+        user.imageId = "";
         sessionStorage.setItem("currentUser", JSON.stringify(user));
         dispatch(getMessage("Network Error. Please Try again"));
         dispatch(selectDialog("error"));

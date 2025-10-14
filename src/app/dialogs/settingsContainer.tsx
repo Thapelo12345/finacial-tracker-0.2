@@ -39,7 +39,7 @@ export default function SettingsContainer() {
       </h1>
       <div
         className={`w-[95%] md:w-100 duration-500 rounded-sm shadow-2xl h-auto bg-[whitesmoke] z-10 ${
-          windowWidth > 768 ? "mt-40" : "mt-3" // Use state variable
+          windowWidth > 768 ? "mt-40" : "mt-10" // Use state variable
         }`}
         style={{
           transform: settings.settingsInput
