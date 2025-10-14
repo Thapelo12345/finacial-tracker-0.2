@@ -43,9 +43,11 @@ export default function Budget() {
     if (data) {
       const user = JSON.parse(data);
 
+      const surplus = user.budgetAmount - user.budgetExpense
+
       setBugdetAmount(user.budgetAmount);
       setBudgetExpense(user.budgetExpense);
-      setBudgetSurplus(user.budgetSurplus);
+      setBudgetSurplus(Number(surplus.toFixed(2)));
       setExpense(user.budgetExpenses);
     }
   }, [checkUpdate]);

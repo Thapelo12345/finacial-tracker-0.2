@@ -57,7 +57,7 @@ export default function AuthenticationForm() {
         }
       }}
       id="formAnimation"
-      className="backface-hidden bg-[whitesmoke] shadow-2xl shadow-black flex flex-col items-center rounded-lg justify-center border-2 border-white w-full sm:w-1/2 p-2 m-2"
+      className="backface-hidden bg-[whitesmoke] shadow-2xl shadow-black flex flex-col items-center rounded-lg justify-center border-2 border-white w-[83%] sm:w-1/2 p-2 m-2"
     >
       <UserCircleIcon className="w-30 h-20 text-black/50" />
 
