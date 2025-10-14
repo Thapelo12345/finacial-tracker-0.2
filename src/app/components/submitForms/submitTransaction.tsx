@@ -45,7 +45,7 @@ export default function TransactionSubmit() {
   }, [checkUpdate]);
 
   return (
-    <div className="absolute w-screen h-screen overflow-y-auto">
+    <div className="flex items-center justify-center absolute left-3 md:left-0 w-[95%] md:w-screen h-screen overflow-y-auto">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -117,9 +117,9 @@ export default function TransactionSubmit() {
             type="submit"
             // className="text-green-700 font-medium p-2 w-fit rounded-sm cursor-pointer"
             className="p-2 text-white font-medium bg-green-400 rounded-sm m-2 cursor-pointer"
-      style={{
-        boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey"
-      }}
+            style={{
+              boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey",
+            }}
           >
             Submitt
           </button>
@@ -127,10 +127,9 @@ export default function TransactionSubmit() {
           <button
             // className="text-red-700 font-medium p-2 w-fit rounded-sm cursor-pointer"
             className="p-2 text-white font-medium bg-red-400 rounded-sm m-2 cursor-pointer"
-      style={{
-        boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey"
-      }}
-            
+            style={{
+              boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey",
+            }}
             type="button"
             onClick={() => dispatch(onOffSubmit())}
           >

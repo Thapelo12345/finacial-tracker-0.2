@@ -43,7 +43,7 @@ export default function SettingsContainer() {
         }`}
         style={{
           transform: settings.settingsInput
-            ? windowWidth > 768 // Use state variable
+            ? windowWidth > 768
               ? "translateX(200px)"
               : "translateX(10px)"
             : "translateX(-400px)",
