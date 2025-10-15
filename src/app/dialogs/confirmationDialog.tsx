@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -36,7 +36,7 @@ export default function ConfirmDialog() {
     >
       <CheckCircleIcon
         id="icon1"
-        className="w-10 h-10 text-green-500 rounded-full"
+        className="m-2 md:m-0 w-10 h-10 text-green-500 rounded-full"
       />
       <h1 className="text-green-400 text-md font-bold m-2 p-2">{message}!..</h1>
     </div>

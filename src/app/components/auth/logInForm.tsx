@@ -9,7 +9,7 @@ import EmailAuthentication from "@/app/functions/authFunctions/emailLogIn";
 import gsap from "gsap";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-// import { useNavigate } from "react-router-dom";
+import { ResetPassword } from "@/app/functions/authFunctions/forgotPassword";
 
 export default function AuthenticationForm() {
   const navigate = useRouter();
@@ -19,6 +19,13 @@ export default function AuthenticationForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [reEnter, setReEnter] = useState("");
+
+  const showInputs = () => {
+    return formState === "register" || formState === "logIn";
+  };
+  const showInputs1 = () => {
+    return formState === "register" || formState === "reset";
+  };
 
   useGSAP(() => {
     gsap.fromTo(
@@ -43,18 +50,26 @@ export default function AuthenticationForm() {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        
-        EmailAuthentication({
-          registerLogIn: formState,
-          email,
-          password,
-          reEnterPassword: reEnter,
-          userName: username,
-          NavigateFunction: navigate.push,
-        });
-        if(formState === "register"){
-          setForm("logIn")
+        if (formState === "reset") {
+          ResetPassword(email);
+        } else {
+          EmailAuthentication({
+            registerLogIn: formState,
+            email,
+            password,
+            reEnterPassword: reEnter,
+            userName: username,
+            NavigateFunction: navigate.push,
+          });
         }
+        if (formState === "register" || formState === "reset") {
+          setForm("logIn");
+        }
+
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setReEnter("");
       }}
       id="formAnimation"
       className="backface-hidden bg-[whitesmoke] shadow-2xl shadow-black flex flex-col items-center rounded-lg justify-center border-2 border-white w-[83%] sm:w-1/2 p-2 m-2"
@@ -77,12 +92,14 @@ export default function AuthenticationForm() {
         sendValue={setEmail}
       />
 
-      <LabelInput
-        InputType="password"
-        title="Password"
-        inputedValue={password}
-        sendValue={setPassword}
-      />
+      {showInputs() && (
+        <LabelInput
+          InputType="password"
+          title="Password"
+          inputedValue={password}
+          sendValue={setPassword}
+        />
+      )}
 
       {formState === "register" && (
         <LabelInput
@@ -95,23 +112,25 @@ export default function AuthenticationForm() {
 
       {/* socila media log in */}
 
-      <div className=" w-full sm:w-1/2 h-20 flex flex-row items-center justify-center">
-        <button
-          className="flex flex-row w-fit md:w-50 cursor-pointer text-xs rounded-lg text-black m-2 p-2"
-          type="button"
-          onClick={handleGoogleAuthClick}
-        >
-          <Image
-            className=" w-6 h-6 md:w-8 md:h-8"
-            alt="Google Icon"
-            src="/google-image.png"
-            width={32}
-            height={32}
-            priority
-          />
-          <span className="m-2 text-xs">Log in with google acc</span>
-        </button>
-      </div>
+      {showInputs() && (
+        <div className=" w-full sm:w-1/2 h-20 flex flex-row items-center justify-center">
+          <button
+            className="flex flex-row w-fit md:w-50 cursor-pointer text-xs rounded-lg text-black m-2 p-2"
+            type="button"
+            onClick={handleGoogleAuthClick}
+          >
+            <Image
+              className=" w-6 h-6 md:w-8 md:h-8"
+              alt="Google Icon"
+              src="/google-image.png"
+              width={32}
+              height={32}
+              priority
+            />
+            <span className="m-2 text-xs">Log in with google acc</span>
+          </button>
+        </div>
+      )}
 
       {/* button logIn */}
       <div className="w-full flex flex-row justify-evenly">
@@ -123,13 +142,17 @@ export default function AuthenticationForm() {
             >
               LogIn
             </button>
-            <button className="text-black text-xs self-center p-2 m-2">
+            <button
+              className="text-black text-xs self-center p-2 m-2 cursor-pointer"
+              type="button"
+              onClick={() => setForm("reset")}
+            >
               Forgot password
             </button>
 
             {/* reset btn */}
             <button
-              className="text-xs text-black self-end p-2 m-2 rounded-lg"
+              className="text-xs text-black self-end p-2 m-2 rounded-lg cursor-pointer"
               type="button"
               onClick={() => setForm("register")}
             >
@@ -138,17 +161,17 @@ export default function AuthenticationForm() {
           </>
         )}
 
-        {formState === "register" && (
+        {showInputs1() && (
           <>
             <button
-              className="text-black self-start p-2 m-2 rounded-lg"
+              className="text-black self-start p-2 m-2 rounded-lg cursor-pointer"
               type="submit"
             >
               Submit
             </button>
 
             <button
-              className="text-black self-start p-2 m-2 rounded-lg"
+              className="text-black self-start p-2 m-2 rounded-lg cursor-pointer"
               onClick={() => setForm("logIn")}
             >
               Back
