@@ -5,22 +5,26 @@ import { selectDialog } from "@/app/state management/selectDialog";
 import { openCloseDialog } from "@/app/state management/openCloseDialog";
 import { getMessage } from "@/app/state management/dialogMessage";
 
-export async function ResetPassword( emailAddress: string ){
-    store.dispatch(selectDialog("load"))
-    store.dispatch(openCloseDialog())
+export async function ResetPassword(emailAddress: string) {
+  store.dispatch(selectDialog("load"));
+  store.dispatch(openCloseDialog());
 
-    sendPasswordResetEmail(auth, emailAddress)
-    .then(()=>{
-    store.dispatch(getMessage("Reset link has been sent to your email address. if not in inbox check spam"))
-    store.dispatch(selectDialog("confirm"))
+  sendPasswordResetEmail(auth, emailAddress)
+    .then(() => {
+      store.dispatch(
+        getMessage(
+          "Reset link has been sent to your email address. if not in inbox check spam"
+        )
+      );
+      store.dispatch(selectDialog("confirm"));
 
-    setTimeout(()=>{store.dispatch(openCloseDialog())}, 5000)
-
+      setTimeout(() => {
+        store.dispatch(openCloseDialog());
+      }, 5000);
     })
-    .catch((error)=>{
-        console.log(error)
-        store.dispatch(getMessage("Faild to reset password"))
-        store.dispatch(selectDialog("error"))
-    })
-   
+    .catch((error) => {
+      console.log(error);
+      store.dispatch(getMessage("Faild to reset password"));
+      store.dispatch(selectDialog("error"));
+    });
 }

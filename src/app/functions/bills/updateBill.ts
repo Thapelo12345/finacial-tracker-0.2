@@ -7,6 +7,10 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import { DataBaseBill } from "@/app/interFaces/billInterface";
+import store from "@/app/state management/store";
+import { getMessage } from "@/app/state management/dialogMessage";
+import { selectDialog } from "@/app/state management/selectDialog";
+import { openCloseDialog } from "@/app/state management/openCloseDialog";
 
 export async function UpdateBill(
   bill: DataBaseBill,
@@ -49,6 +53,9 @@ export async function UpdateBill(
         } //end of match user if
       } catch (error) {
         //end of try
+        store.dispatch(getMessage("Failed to update bill"));
+        store.dispatch(selectDialog("error"));
+        store.dispatch(openCloseDialog());
         console.log(error);
       }
     } //end of crrbill if
