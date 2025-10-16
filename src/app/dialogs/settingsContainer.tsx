@@ -4,6 +4,8 @@ import { SettingsContext } from "../context/settingsContext";
 import UploadImages from "../components/dash/settingsInput/uploadImage";
 import EditName from "../components/dash/settingsInput/editName";
 import DeletAccount from "../components/dash/settingsInput/deleteAcc";
+import ChangePassword from "../components/dash/settingsInput/changePassword";
+import { setTooltipSettingsState } from "recharts/types/state/tooltipSlice";
 
 export default function SettingsContainer() {
   const settings = useContext(SettingsContext);
@@ -54,6 +56,7 @@ export default function SettingsContainer() {
        }}
       >
         {settings.clicked === "updateName" && <EditName />}
+        {settings.clicked === "password" && <ChangePassword />}
         {settings.clicked === "updateImage" && <UploadImages />}
         {settings.clicked === "delete" && <DeletAccount />}
       </div>

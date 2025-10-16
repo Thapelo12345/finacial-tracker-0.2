@@ -49,7 +49,12 @@ export async function UpdateBill(
                 closeLoad(false);
               });
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+              console.log(error)
+              store.dispatch(getMessage("Failing to connect to database check internet connection"))
+              store.dispatch(selectDialog("error"))
+              store.dispatch(openCloseDialog())
+            });
         } //end of match user if
       } catch (error) {
         //end of try

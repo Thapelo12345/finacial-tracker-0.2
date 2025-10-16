@@ -4,6 +4,7 @@ import {
   ClipboardIcon,
   CameraIcon,
   TrashIcon,
+  LockOpenIcon
 } from "@heroicons/react/20/solid";
 import { useContext, useState, useEffect } from "react";
 import { SettingsContext } from "@/app/context/settingsContext";
@@ -52,6 +53,33 @@ export default function Settings() {
         />
         Update image
       </button>
+
+{/* password btn here */}
+ <button
+        className={`flex flex-row text-xs m-4 p-2 duration-200
+        ${
+          active === "password" ? "bg-white text-black" : "text-white bg-black/20"
+        } rounded-tr-lg rounded-br-lg cursor-pointer`}
+        onClick={() => {
+          if (settings.clicked !== "password") {
+            setTimeout(() => {
+              settings.setClicked("password");
+            }, 200);
+            settings.setSettingsInput(false);
+            setTimeout(() => {
+              settings.setSettingsInput(true);
+            }, 650);
+          }
+        }}
+      >
+        <LockOpenIcon
+          className={`w-5 h-5 mr-2 ${
+            active === "password" ? "text-green-500" : "text-white"
+          }`}
+        />
+        password
+      </button>
+{/* end of password btn */}
 
       <button
         className={`flex flex-row text-xs rounded-br-lg rounded-tr-lg p-2 duration-200

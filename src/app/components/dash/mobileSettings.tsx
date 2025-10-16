@@ -3,6 +3,7 @@ import {
   ClipboardIcon,
   CameraIcon,
   TrashIcon,
+  LockOpenIcon
 } from "@heroicons/react/20/solid";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -34,7 +35,7 @@ export default function MobileSettings() {
       style={{
         transform: !settings.currentValue
           ? "translateY(250px)"
-          : "translateY(30px)",
+          : "translateY(4px)",
       }}
     >
       <nav className="flex flex-col ">
@@ -54,6 +55,26 @@ export default function MobileSettings() {
           />
           Update image
         </button>
+
+        {/* password btn */}
+        <button
+          className={`mobileSettingsBtn rounded-tr-lg rounded-br-lg
+          ${
+            active === "password"
+              ? "text-black bg-white"
+              : "text-white bg-none"
+          } border border-white flex flex-row items-center justify-evenly m-2 p-1 w-fit text-xs`}
+
+          onClick={() => settings.setClicked("password")}
+        >
+          <LockOpenIcon 
+            className={`w-4 h-4 mr-1 ${
+              active === "password" ? "text-green-400" : "text-white"
+            }`}
+          />
+          password
+        </button>
+        {/* end of password ntm */}
         <button
           className={`mobileSettingsBtn rounded-tr-lg rounded-br-lg
           ${
@@ -70,6 +91,7 @@ export default function MobileSettings() {
           />
           Update name
         </button>
+
         <button
           className={`mobileSettingsBtn rounded-tr-lg rounded-br-lg
           ${
