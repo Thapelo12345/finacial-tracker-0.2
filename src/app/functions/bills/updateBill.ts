@@ -6,63 +6,61 @@ import {
   arrayRemove,
   arrayUnion,
 } from "firebase/firestore";
-import { DataBaseBill } from "@/app/interFaces/billInterface";
+import Bill from "@/app/interFaces/billInterface";
 import store from "@/app/state management/store";
-import { getMessage } from "@/app/state management/dialogMessage";
-import { selectDialog } from "@/app/state management/selectDialog";
-import { openCloseDialog } from "@/app/state management/openCloseDialog";
+import { getMessage } from "@/app/state management/slices/dialogMessage";
+import { selectDialog } from "@/app/state management/slices/selectDialog";
+import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
+import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
 
 export async function UpdateBill(
-  bill: DataBaseBill,
-  closeLoad: (value: boolean) => void
+  bill: Bill,
+  closeLoad: (value: boolean) => void,
 ) {
   const data = sessionStorage.getItem("currentUser");
-  if (data) {
+
+  if (!data) {
+    alert("No user data FOUND!..")
+    return
+  }
     const currentUser = JSON.parse(data);
     const crrBill = currentUser.recurringBills.find(
-      (item: DataBaseBill) => item.id === bill.id
+      (item: Bill) => item.id === bill.id,
     );
 
     if (crrBill !== undefined) {
       try {
+
+        if(!navigator.onLine) throw new Error("No internet connection!..")
         const getDocuments = await getDocs(collection(db, "users"));
         const matchingUser = getDocuments.docs.find(
-          (doc) => doc.data().email === currentUser.email
+          (doc) => doc.data().email === currentUser.email,
         );
 
-        if (matchingUser) {
-          await updateDoc(matchingUser.ref, {
-            recurringBills: arrayRemove(crrBill),
-          })
-            .then(() => {
-              updateDoc(matchingUser.ref, {
-                recurringBills: arrayUnion(bill),
-              }).then(() => {
-                const pos = currentUser.recurringBills.findIndex(
-                  (item: DataBaseBill) => item.id === bill.id
-                );
-                currentUser.recurringBills[pos] = bill;
-                sessionStorage.setItem(
-                  "currentUser",
-                  JSON.stringify(currentUser)
-                );
-                closeLoad(false);
-              });
-            })
-            .catch((error) => {
-              console.log(error)
-              store.dispatch(getMessage("Failing to connect to database check internet connection"))
-              store.dispatch(selectDialog("error"))
-              store.dispatch(openCloseDialog())
-            });
-        } //end of match user if
+        if (!matchingUser) throw new Error("User not FOUND!..")
+
+          if(!navigator.onLine) throw new Error("No internet connection!..")
+
+          await updateDoc(matchingUser.ref, {recurringBills: arrayRemove(crrBill)})
+          await updateDoc(matchingUser.ref, {recurringBills: arrayUnion(bill), })
+          const pos = currentUser.recurringBills.findIndex((item: Bill) => item.id === bill.id);
+          currentUser.recurringBills[pos] = bill;
+          sessionStorage.setItem("currentUser", JSON.stringify(currentUser),);
+          closeLoad(false);
+
+          const delay = setTimeout(()=>{
+            store.dispatch(appUpdated())
+            clearTimeout(delay)
+          }, 1500)
+            
       } catch (error) {
         //end of try
+        alert("Failed to update bill");
         store.dispatch(getMessage("Failed to update bill"));
         store.dispatch(selectDialog("error"));
         store.dispatch(openCloseDialog());
         console.log(error);
+        closeLoad(false);
       }
     } //end of crrbill if
-  } //end of if data
 } //update function

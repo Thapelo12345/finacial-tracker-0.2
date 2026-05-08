@@ -7,6 +7,9 @@ import { useState, useEffect } from "react";
 import type { RootState } from "../../state management/store";
 
 export default function SubmitContainer() {
+  const formType = useSelector((state: RootState)=> state.formtype.formType)
+  const globalBill = useSelector((state: RootState)=> state.bill)
+
   const openSubmition = useSelector(
     (state: RootState) => state.submit.openToSubmit
   );
@@ -29,7 +32,7 @@ export default function SubmitContainer() {
       } flex items-center justify-center absolute top-0 left-0 w-screen h-screen bg-black/70 z-40 overflow-hidden`}
     >
       {selectedForm1 === "transaction" && <TransactionSubmit />}
-      {selectedForm1 === "bills" && <SubmitBills />}
+      {selectedForm1 === "bills" && <SubmitBills bill={formType == "edit" ? globalBill : undefined} formType={formType}/>}
       {selectedForm1 === "budget" && <SubmitBudget />}
     </div>
   );

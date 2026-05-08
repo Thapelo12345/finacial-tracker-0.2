@@ -3,8 +3,8 @@ import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import { useContext, useState } from "react";
 import { BudgetContext } from "@/app/context/budgetContext";
 import { useDispatch } from "react-redux";
-import { selectDialog } from "../state management/selectDialog";
-import { openCloseDialog } from "../state management/openCloseDialog";
+import { selectDialog } from "../state management/slices/selectDialog";
+import { openCloseDialog } from "../state management/slices/openCloseDialog";
 
 type Props = {
   currentBalance: number;
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function BalanceInput({ currentBalance, closing }: Props) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const update = useContext(BudgetContext);
 
   const [finalAmount, setFinalAmount] = useState(update.budgetAmount);
@@ -46,8 +46,8 @@ export default function BalanceInput({ currentBalance, closing }: Props) {
           ease: "linear",
         }}
         onClick={() => {
-          dispatch(selectDialog("load"))
-          dispatch(openCloseDialog())
+          dispatch(selectDialog("load"));
+          dispatch(openCloseDialog());
           update.updateAmount(finalAmount);
           closing();
         }}

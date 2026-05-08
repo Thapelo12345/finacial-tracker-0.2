@@ -1,11 +1,11 @@
 "use client";
-import PageHeader from "@/app/ui/pageHeader";
+import PageHeader from "@/app/components/ui/pageHeader";
 import TransactionTable from "@/app/components/transaction/transactionTable";
-import BalanceContainer from "@/app/ui/balanceContainer";
-import AddItemBtn from "@/app/ui/buttons/addItemBtn";
+import BalanceContainer from "@/app/components/ui/balanceContainer";
+import AddItemBtn from "@/app/components/ui/buttons/addItemBtn";
 import { useDispatch } from "react-redux";
-import { onOffSubmit } from "@/app/state management/openSubmition";
-import { settingSelected } from "@/app/state management/selectSubmit";
+import { onOffSubmit } from "@/app/state management/slices/openSubmition";
+import { settingSelected } from "@/app/state management/slices/selectSubmit";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/app/state management/store";
 import { useState, useEffect } from "react";
@@ -14,7 +14,7 @@ export default function Transactions() {
   const dispatch = useDispatch();
 
   const checkUpdate = useSelector(
-    (state: RootState) => state.updateApp.updateApp
+    (state: RootState) => state.updateApp.updateApp,
   );
   const [transactionSurplus, setTransactionSurplus] = useState(0);
   const [totalAmount, setAmount] = useState(0);

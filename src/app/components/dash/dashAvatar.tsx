@@ -1,5 +1,5 @@
 "use client";
-import Avatar from "@/app/ui/avatar";
+import Avatar from "../ui/avatar";
 
 type Props = {
   username: string;

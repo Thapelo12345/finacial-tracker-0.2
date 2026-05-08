@@ -1,6 +1,6 @@
 "use client";
 import { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "../context/settingsContext";
+import { SettingsContext } from "@/app/context/settingsContext";
 
 const colors: string[] = [
   "Navy",

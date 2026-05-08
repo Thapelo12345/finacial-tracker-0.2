@@ -6,10 +6,10 @@ import {
   arrayRemove,
 } from "firebase/firestore";
 import store from "@/app/state management/store";
-import { selectDialog } from "@/app/state management/selectDialog";
-import { openCloseDialog } from "@/app/state management/openCloseDialog";
-import { getMessage } from "@/app/state management/dialogMessage";
-import { appUpdated } from "@/app/state management/UpdateAllComponents";
+import { selectDialog } from "@/app/state management/slices/selectDialog";
+import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
+import { getMessage } from "@/app/state management/slices/dialogMessage";
+import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
 
 type TransactObj = {
   transactionId: number;
@@ -32,7 +32,7 @@ export async function DeleteTransaction({ transactionId }: Props) {
     const user = JSON.parse(data);
 
     const crrTransaction: TransactObj = user.transactions.find(
-      (transaction: TransactObj) => transaction.transactionId === id
+      (transaction: TransactObj) => transaction.transactionId === id,
     );
 
     if (crrTransaction !== undefined) {
@@ -47,13 +47,13 @@ export async function DeleteTransaction({ transactionId }: Props) {
         try {
           const getDocuments = await getDocs(collection(db, "users"));
           const matchingUser = getDocuments.docs.find(
-            (doc) => doc.data().email === user.email
+            (doc) => doc.data().email === user.email,
           );
 
           if (!matchingUser) {
             store.dispatch(selectDialog("error"));
             store.dispatch(
-              getMessage("Sorry User credentials where not found")
+              getMessage("Sorry User credentials where not found"),
             );
             store.dispatch(openCloseDialog());
           } else {
@@ -68,7 +68,7 @@ export async function DeleteTransaction({ transactionId }: Props) {
 
               user.transactions.splice(
                 user.transactions.indexOf(crrTransaction),
-                1
+                1,
               );
 
               sessionStorage.setItem("currentUser", JSON.stringify(user));
@@ -93,13 +93,13 @@ export async function DeleteTransaction({ transactionId }: Props) {
         try {
           const getDocuments = await getDocs(collection(db, "users"));
           const matchingUser = getDocuments.docs.find(
-            (doc) => doc.data().email === user.email
+            (doc) => doc.data().email === user.email,
           );
 
           if (!matchingUser) {
             store.dispatch(selectDialog("error"));
             store.dispatch(
-              getMessage("Sorry User credentials where not found")
+              getMessage("Sorry User credentials where not found"),
             );
             store.dispatch(openCloseDialog());
           } else {
@@ -109,11 +109,11 @@ export async function DeleteTransaction({ transactionId }: Props) {
             })
               .then(() => {
                 user.transactionExpense = Number(
-                  newTransactionExpense.toFixed(2)
+                  newTransactionExpense.toFixed(2),
                 );
                 user.transactions.splice(
                   user.transactions.indexOf(crrTransaction),
-                  1
+                  1,
                 );
 
                 sessionStorage.setItem("currentUser", JSON.stringify(user));

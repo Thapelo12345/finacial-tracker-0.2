@@ -3,14 +3,14 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../state management/store";
 import { useDispatch } from "react-redux";
-import { openCloseDialog } from "../state management/openCloseDialog";
+import { openCloseDialog } from "../state management/slices/openCloseDialog";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
 export default function WarningDialog() {
   const dispatch = useDispatch();
   const errorMessage = useSelector(
-    (state: RootState) => state.dialogMessage.dialogMessage
+    (state: RootState) => state.dialogMessage.dialogMessage,
   );
   const [message, setMessage] = useState("This is the Error Message");
 

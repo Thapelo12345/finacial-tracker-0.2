@@ -1,6 +1,6 @@
 "use client";
 
-import SettingsHeader from "@/app/ui/settingsHeader/header";
+import SettingsHeader from "../../ui/settingsHeader/header";
 import { UserIcon } from "@heroicons/react/20/solid";
 import { useRef, useContext } from "react";
 import {
@@ -13,10 +13,10 @@ import {
 import { db } from "../../../../../firebase.config";
 import { getDocs, collection, updateDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
-import { selectDialog } from "@/app/state management/selectDialog";
-import { openCloseDialog } from "@/app/state management/openCloseDialog";
-import { getMessage } from "@/app/state management/dialogMessage";
-import { appUpdated } from "@/app/state management/UpdateAllComponents";
+import { selectDialog } from "@/app/state management/slices/selectDialog";
+import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
+import { getMessage } from "@/app/state management/slices/dialogMessage";
+import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
 import { SettingsContext } from "@/app/context/settingsContext";
 
 export default function UploadImages() {
@@ -35,7 +35,7 @@ export default function UploadImages() {
         // If the server response is not successful, extract the error text for debugging.
         const errorText = await response.text();
         throw new Error(
-          `Request failed with status ${response.status}: ${errorText}`
+          `Request failed with status ${response.status}: ${errorText}`,
         );
       }
 
@@ -119,7 +119,7 @@ export default function UploadImages() {
 
         const getDocuments = await getDocs(collection(db, "users"));
         const matchUser = getDocuments.docs.find(
-          (doc) => doc.data().email === user.email
+          (doc) => doc.data().email === user.email,
         );
 
         if (!matchUser) {

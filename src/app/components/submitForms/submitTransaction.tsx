@@ -1,10 +1,10 @@
 "use client";
-import LabelInputText from "@/app/ui/submitForms/labelInputText";
-import LabelInputNumber from "@/app/ui/submitForms/labelInputNumber";
-import DropDown from "@/app/ui/submitForms/dropDown";
+import LabelInputText from "@/app/components/ui/submitForms/labelInputText";
+import LabelInputNumber from "@/app/components/ui/submitForms/labelInputNumber";
+import DropDown from "@/app/components/ui/submitForms/dropDown";
 import { useDispatch } from "react-redux";
-import { onOffSubmit } from "../../state management/openSubmition";
-import { useState, useEffect } from "react";
+import { onOffSubmit } from "../../state management/slices/openSubmition";
+import { useState, useEffect  } from "react";
 import AddTransaction from "@/app/functions/transactionFunctions/AddTransaction";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../state management/store";
@@ -30,12 +30,14 @@ const categories: Categories = [
 export default function TransactionSubmit() {
   const dispatch = useDispatch();
   const checkUpdate = useSelector(
-    (state: RootState) => state.updateApp.updateApp
+    (state: RootState) => state.updateApp.updateApp,
   );
 
-  const [name, setName] = useState("");
+  // const name = useRef("");
+  const [name, setName] = useState("")
   const [transactionType, setTransactionType] = useState("Income");
-  const [amount, setAmount] = useState(0.0);
+  // const amount = useRef(0.0);
+  const [amount, setAmount] = useState(0.0)
   const [description, setDescription] = useState("");
   const [selectedCategory, setCategory] = useState("Salary");
 
@@ -59,14 +61,14 @@ export default function TransactionSubmit() {
 
           dispatch(onOffSubmit());
           setName("");
-          setAmount(0);
+          setAmount(0.0);
           setDescription("");
           setCategory("");
           setTransactionType("");
         }}
         className="flex flex-col w-[90%] md:w-1/2 items-start bg-[whitesmoke] mt-10 self-center justify-self-center mb-24 p-2 rounded-lg overflow-x-hidden"
       >
-        <h1 className="text-black/50 text-2xl font-serif text-center font-bold">
+        <h1 className="submitFormsHeaders">
           Transaction
         </h1>
 
@@ -113,23 +115,12 @@ export default function TransactionSubmit() {
         </div>
 
         <div className="flex flex-row items-center justify-evenly w-full p-2">
-          <button
-            type="submit"
-            // className="text-green-700 font-medium p-2 w-fit rounded-sm cursor-pointer"
-            className="p-2 text-white font-medium bg-green-400 rounded-sm m-2 cursor-pointer"
-            style={{
-              boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey",
-            }}
-          >
+          <button type="submit" className="submit-btn">
             Submitt
           </button>
 
           <button
-            // className="text-red-700 font-medium p-2 w-fit rounded-sm cursor-pointer"
-            className="p-2 text-white font-medium bg-red-400 rounded-sm m-2 cursor-pointer"
-            style={{
-              boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey",
-            }}
+            className="cancel-btn"
             type="button"
             onClick={() => dispatch(onOffSubmit())}
           >

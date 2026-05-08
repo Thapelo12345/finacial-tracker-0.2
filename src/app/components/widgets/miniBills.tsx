@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import MiniDetailsBtn from "./miniDetailsBtn";
 import MiniBillsCell from "./miniBillsCell";
 import { useState, useEffect } from "react";
-import { getNextPaymentDate } from "@/app/functions/bills/billGetnextPayment";
-import { DaysLeft } from "@/app/functions/bills/billGetnextPayment";
+import { getNextPaymentDate } from "@/app/functions/bills/billDates";
+import { DaysLeft } from "@/app/functions/bills/billDates";
 import type { RootState } from "../../state management/store";
 import type { DataBaseBill } from "@/app/interFaces/billInterface";
 
@@ -14,7 +14,7 @@ type Prop = {
 };
 export default function MiniBills({ animate }: Prop) {
   const checkUpdate = useSelector(
-    (state: RootState) => state.updateApp.updateApp
+    (state: RootState) => state.updateApp.updateApp,
   );
 
   const [paidBills, setPaidBills] = useState(0);
@@ -30,7 +30,7 @@ export default function MiniBills({ animate }: Prop) {
       if (user.recurringBills.length !== 0) {
         user.recurringBills.forEach((bill: DataBaseBill) => {
           const countDays = DaysLeft(
-            getNextPaymentDate(bill.startDate, bill.dueDate, bill.frenquently)
+            getNextPaymentDate(bill.startDate, bill.dueDate, bill.frenquently),
           );
 
           const counter = (): number => {

@@ -2,12 +2,13 @@ import { GetDate } from "./getcurrentDate";
 import { db } from "../../../../firebase.config";
 import { getDocs, collection, updateDoc, arrayUnion } from "firebase/firestore";
 import store from "../../state management/store";
-import { selectDialog } from "../../state management/selectDialog";
-import { openCloseDialog } from "../../state management/openCloseDialog";
-import { getMessage } from "../../state management/dialogMessage";
-import { appUpdated } from "../../state management/UpdateAllComponents";
-import type { DataBaseBill } from "@/app/interFaces/billInterface";
+import { selectDialog } from "../../state management/slices/selectDialog";
+import { openCloseDialog } from "../../state management/slices/openCloseDialog";
+import { getMessage } from "../../state management/slices/dialogMessage";
+import { appUpdated } from "../../state management/slices/UpdateAllComponents";
+import Bill from "@/app/interFaces/billInterface";
 
+// This function adds a new bill to the user's recurring bills in the Firestore database. It retrieves the current user's data from session storage, creates a new bill object, and updates the user's document in Firestore with the new bill. It also handles success and error messages using the application's dialog system.
 export async function AddBill(
   billTitle: string,
   billDescription: string,
@@ -18,64 +19,66 @@ export async function AddBill(
   billCategory: string,
   billDuration: string,
   billFrenquently: string,
-  billStatus: string
+  billStatus: string,
 ) {
+  const data = sessionStorage.getItem("currentUser");
+
+  if (!data) {
+    alert("No User credentals FOUND! logout and in again please");
+    return;
+  }
+
+  const crrUser = JSON.parse(data);
+  const billId = crrUser.recurringBills.length + 1;
+
+  const newBill: Bill = {
+    id: billId,
+    title: billTitle,
+    description: billDescription,
+    amount: billAmount,
+    startDate: billStartDate === "" ? GetDate() : billStartDate,
+    dueDate: billDueDate,
+    endDate: billEndDate,
+    lastPayment: "No payment",
+    category: billCategory,
+    duration: billDuration,
+    frenquently: billFrenquently,
+    status: billStatus,
+    AutoPay: false,
+   
+  };
+
   store.dispatch(selectDialog("load"));
   store.dispatch(openCloseDialog());
 
-  const data = sessionStorage.getItem("currentUser");
+  try {
 
-  if (data) {
-    const crrUser = JSON.parse(data);
-    const billId = crrUser.recurringBills.length + 1;
+    if(!navigator.onLine) throw new Error("No internet connection FOUND!...")
 
-    const newBill: DataBaseBill = {
-      id: billId,
-      title: billTitle,
-      description: billDescription,
-      amount: billAmount,
-      startDate: billStartDate === "" ? GetDate() : billStartDate,
-      dueDate: billDueDate,
-      endDate: billEndDate,
-      category: billCategory,
-      duration: billDuration,
-      frenquently: billFrenquently,
-      status: billStatus,
-    };
+    const getDocuments = await getDocs(collection(db, "users"));
+    const matchingUser = getDocuments.docs.find(
+    (doc) => doc.data().email === crrUser.email,);
 
-    try {
-      const getDocuments = await getDocs(collection(db, "users"));
-      const matchingUser = getDocuments.docs.find(
-        (doc) => doc.data().email === crrUser.email
-      );
+    if (!matchingUser) throw new Error("User credentials not found");
 
-      if (!matchingUser) {
-        store.dispatch(getMessage("User credentials not found"));
-        store.dispatch(selectDialog("error"));
-      } else {
-        await updateDoc(matchingUser.ref, {
-          recurringBills: arrayUnion(newBill),
-        })
-          .then(() => {
-            crrUser.recurringBills.push(newBill);
-            sessionStorage.setItem("currentUser", JSON.stringify(crrUser));
+    if(!navigator.onLine) throw new Error("No internet connection FOUND!...")
+    await updateDoc(matchingUser.ref, { recurringBills: arrayUnion(newBill) });
 
-            store.dispatch(getMessage("Recurring bill added successfully"));
-            store.dispatch(selectDialog("confirm"));
-            store.dispatch(appUpdated());
+    crrUser.recurringBills.push(newBill);
+    sessionStorage.setItem("currentUser", JSON.stringify(crrUser));
 
-            setTimeout(() => {
-              store.dispatch(openCloseDialog());
-            }, 2000);
-          })
-          .catch((error) => console.log(error));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  } //end of data if
-  else {
-    store.dispatch(getMessage("User credentials not found"));
+    store.dispatch(getMessage("Recurring bill added successfully"));
+    store.dispatch(selectDialog("confirm"));
+    store.dispatch(appUpdated());
+
+    setTimeout(() => {
+      store.dispatch(openCloseDialog());
+    }, 2000);
+  } catch (error: Error | unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "An unknown error occurred";
+      console.log(errorMessage)
+    store.dispatch(getMessage(errorMessage));
     store.dispatch(selectDialog("error"));
-  } //end of else data
+  }
 } //end of add bill function

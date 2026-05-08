@@ -1,5 +1,5 @@
 "use client";
-import SettingsHeader from "@/app/ui/settingsHeader/header";
+import SettingsHeader from "../../ui/settingsHeader/header";
 import { ShieldExclamationIcon } from "@heroicons/react/20/solid";
 import { useRouter } from "next/navigation";
 import { DeleteAccount } from "@/app/functions/settingsFunctions/deleteAccount";

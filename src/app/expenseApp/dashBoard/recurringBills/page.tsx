@@ -1,29 +1,33 @@
 "use client";
-import BalanceContainer from "@/app/ui/balanceContainer";
-import PageHeader from "@/app/ui/pageHeader";
+import BalanceContainer from "@/app/components/ui/balanceContainer";
+import PageHeader from "@/app/components/ui/pageHeader";
 import BillsContainer from "@/app/components/bills/billsContainer";
 import { useDispatch } from "react-redux";
-import { onOffSubmit } from "@/app/state management/openSubmition";
-import { settingSelected } from "@/app/state management/selectSubmit";
-import { useState, useEffect } from "react";
+import { onOffSubmit } from "@/app/state management/slices/openSubmition";
+import { settingSelected } from "@/app/state management/slices/selectSubmit";
+import { useState, useEffect, createContext } from "react";
 import { useSelector } from "react-redux";
+import { getFormType } from "@/app/state management/slices/billType";
 import type { RootState } from "@/app/state management/store";
-import { DaysLeft } from "@/app/functions/bills/billGetnextPayment";
-import { getNextPaymentDate } from "@/app/functions/bills/billGetnextPayment";
-import { DataBaseBill } from "@/app/interFaces/billInterface";
-import AddItemBtn from "@/app/ui/buttons/addItemBtn";
+import { checkingArrears } from "@/app/functions/bills/billDates";
+import Bill from "@/app/interFaces/billInterface";
+import AddItemBtn from "@/app/components/ui/buttons/addItemBtn";
+
+ export const updateParent = createContext<{
+  update: boolean,
+  setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  } | null>(null)
 
 export default function Bills() {
-  const checkUpdate = useSelector(
-    (state: RootState) => state.updateApp.updateApp
-  );
+  const checkUpdate = useSelector((state: RootState) => state.updateApp.updateApp,);
   const dispatch = useDispatch();
-
+  
   const [paidBills, setPaidBills] = useState(0);
   const [dueBills, setDueBills] = useState(0);
   const [upcoming, setUpcoming] = useState(0);
 
   const addBill = () => {
+    dispatch(getFormType("add"));
     dispatch(settingSelected("bills"));
     dispatch(onOffSubmit());
   };
@@ -31,57 +35,45 @@ export default function Bills() {
   useEffect(() => {
     const data = sessionStorage.getItem("currentUser");
 
-    if (data) {
-      const user = JSON.parse(data);
+    if (!data) return;
+    const user = JSON.parse(data);
 
-      if (user.recurringBills.length !== 0) {
-        user.recurringBills.forEach((bill: DataBaseBill) => {
-          const countDays = DaysLeft(
-            getNextPaymentDate(bill.startDate, bill.dueDate, bill.frenquently)
-          );
+    let dueAmount = 0,
+      paidAmount = 0,
+      upcomingAmount = 0;
 
-          const counter = (): number => {
-            switch (bill.frenquently) {
-              case "weekly":
-                return 4;
-                break;
+    user.recurringBills.forEach((bill: Bill) => {
+      const currentDate = new Date();
+      const due = new Date(bill.dueDate);
 
-              case "monthly":
-                return 10;
-                break;
+      if (bill.lastPayment == undefined) return;
 
-              case "yearlty":
-                return 20;
-                break;
-
-              default:
-                return 0;
-                break;
-            }
-          };
-
-          if (countDays <= counter() && countDays > counter() * 0.5) {
-            const formatAmount = upcoming + bill.amount;
-            setUpcoming(Number(formatAmount.toFixed(2)));
-          } else if (countDays <= counter() * 0.5 && counter() > 0) {
-            const formatAmount = dueBills + bill.amount;
-            setDueBills(Number(formatAmount.toFixed(2)));
-          } else {
-            const formatAmount = paidBills + bill.amount;
-            setPaidBills(Number(formatAmount.toFixed(2)));
-          }
-        });
-      } //end of if array length
+      const arrears = checkingArrears(
+        bill.amount,
+        bill.startDate,
+        bill.lastPayment,
+        bill.dueDate,
+        bill.frenquently,
+      );
+      if (arrears.arrearsCount != 0) {
+        dueAmount += arrears.arrearsAmount;
+      } 
       else {
-        setPaidBills(0);
-        setDueBills(0);
-        setUpcoming(0);
-      } //end of else array length
-    }
+        
+        const minutesDifference = due.getTime() - currentDate.getTime()
+        const daysLeft = Math.floor(minutesDifference / (1000 * 60 * 60 * 24))
+        daysLeft <= 5 ? upcomingAmount += bill.amount : paidAmount += bill.amount
+
+      }//end of else
+
+        setPaidBills(paidAmount)
+        setDueBills(dueAmount)
+        setUpcoming(upcomingAmount)
+    }); //end of each loop
   }, [checkUpdate]);
 
   return (
-    <main className="m-2 p-4 pb-15 md:pb-4 w-screen h-screen overflow-y-auto">
+    <main className="md:m-2 md:p-4 pb-15 md:pb-4 w-screen h-screen overflow-y-auto">
       <PageHeader title="Recurring Bills" />
       <div className="flex flex-row flex-wrap justify-start">
         <BalanceContainer
@@ -104,7 +96,7 @@ export default function Bills() {
       </div>
 
       <div className="flex flex-row w-screen h-auto overflow-y-auto">
-        <BillsContainer />
+        <BillsContainer setPaid={setPaidBills} setDue={setDueBills} setUpcoming={setUpcoming} />
       </div>
     </main>
   );

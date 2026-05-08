@@ -1,47 +1,52 @@
 "use client";
-import { TrashIcon } from "@heroicons/react/20/solid";
+import { TrashIcon, PencilSquareIcon } from "@heroicons/react/20/solid";
 import { useGSAP } from "@gsap/react";
-import { useState, useEffect } from "react";
-import { DaysLeft } from "@/app/functions/bills/billGetnextPayment";
+import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
-import { DataBaseBill } from "@/app/interFaces/billInterface";
-import BillCardHeader from "@/app/ui/bills/billCardHeader";
+import Bill from "@/app/interFaces/billInterface";
+import BillProgressPaymentComponent from "./billprogressPayment";
+import BillCardHeader from "@/app/components/ui/bills/billCardHeader";
 import DeleteBill from "@/app/functions/bills/deleteBill";
+import AutoPayComponent from "../ui/bills/billAutoPay";
 import { motion } from "framer-motion";
 import BillTables from "./billTables";
 import { BillContext, LoadContext } from "@/app/context/billContext";
 import BillLoader from "./billCardLoad";
-import { getNextPaymentDate } from "@/app/functions/bills/billGetnextPayment";
+import {
+  getNextPaymentDate,
+  nextPaymentDate,
+  checkingArrears,
+} from "@/app/functions/bills/billDates";
+import { useDispatch, useSelector } from "react-redux";
+import { onOffSubmit } from "@/app/state management/slices/openSubmition";
+import { setBillSlice } from "@/app/state management/slices/bill";
+import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
+import { settingSelected } from "@/app/state management/slices/selectSubmit";
 import { UpdateBill } from "@/app/functions/bills/updateBill";
+import { updateBillValues } from "@/app/functions/bills/UpdateBillValues";
+import { getFormType } from "@/app/state management/slices/billType";
+import type { RootState } from "@/app/state management/store";
+import ArrearsComponent from "./arrearsComponent";
 
-type Props = {
-  billId: number;
-  title: string;
-  description: string;
-  amount: number;
-  startDate: string;
-  dueDate: string;
-  endDate: string;
-  category: string;
-  duration: string;
-  frenquently: string;
-  billStatus: string;
-};
+type PROPS = Bill & { billNotification: (value: boolean) => void };
 
 export default function BillCard({
-  billId,
+  id,
   title,
   amount,
   description,
   startDate,
   dueDate,
   endDate,
+  lastPayment,
   category,
   duration,
   frenquently,
-  billStatus,
-}: Props) {
-  const currentColor = (value: string): string => {
+  status,
+  AutoPay,
+  billNotification,
+}: PROPS) {
+  const currentTextColor = (value: string): string => {
     switch (value) {
       case "active":
         return "lime";
@@ -52,30 +57,55 @@ export default function BillCard({
         break;
 
       case "inactive":
-        return "hsl(37 7.7% 30%)";
+        return "grey";
         break;
       default:
         return "white";
     }
   };
 
-  const [billMessage, setBillMessage] = useState("bill up to date");
-  const [billMessageColor, setBillMessageColor] = useState("lime");
-  const [status, setStatus] = useState(billStatus);
-  const [color, setColor] = useState(currentColor(billStatus));
-  const [load, setLoad] = useState(false);
+  function selectThemeColor(statusValue: string) {
+    if (statusValue == "active") return "oklch(80.9% 0.105 251.813)";
+    else if (statusValue == "pause") return "orange";
+    else if (statusValue == "inactive") return "gray";
+  }
 
+  const dispatch = useDispatch();
+  const billLoading = useSelector(
+    (state: RootState) => state.billLoader.billLoad,
+  );
+  const currentBillId = useSelector((state: RootState) => state.bill.id);
+  const appUpdate = useSelector(
+    (state: RootState) => state.updateApp.updateApp,
+  );
+
+  const billChangedTo = useRef(false);
+
+  const [billMessage, setBillMessage] = useState("bill up to date");
+  const [statusColor, setStatusColor] = useState(selectThemeColor(status));
+  const [autopay, setAutoPay] = useState(AutoPay);
+  const [billMessageColor, setBillMessageColor] = useState("lime");
+  const [lastpaymentDate, setLastPaymentDate] = useState<string>(
+    lastPayment == undefined ? "No payment" : lastPayment,
+  );
+  const [billStatus, setStatus] = useState(status);
+  const [textColor, setColor] = useState(currentTextColor(billStatus));
+  const [load, setLoad] = useState(false);
+  const [arrears, setArrears] = useState<{
+    arrearsCount: number;
+    arrearsAmount: number;
+  }>(checkingArrears(amount, startDate, lastpaymentDate, dueDate, frenquently));
   // strat date - due date - frenqulty
   const nextDueDate = getNextPaymentDate(startDate, dueDate, frenquently);
 
-  function currentBill(): DataBaseBill | null {
+  function currentBill(): Bill | null {
     const data = sessionStorage.getItem("currentUser");
 
     if (data) {
       const user = JSON.parse(data);
 
       const currentBill = user.recurringBills.find(
-        (item: DataBaseBill) => item.id === billId
+        (item: Bill) => item.id === id,
       );
       return currentBill !== undefined ? currentBill : null;
     }
@@ -83,7 +113,49 @@ export default function BillCard({
   }
 
   useEffect(() => {
-    setColor(currentColor(status));
+    if (autopay) {
+      const due = new Date(dueDate);
+      const clone = due;
+
+      switch (frenquently) {
+        case "yearly":
+          clone.setFullYear(clone.getFullYear() - 1);
+          break;
+
+        case "monthly":
+          clone.setDate(1);
+          clone.setMonth(clone.getMonth() - 1);
+          const lastDate = new Date(
+            clone.getFullYear(),
+            clone.getMonth() + 1,
+            0,
+          ).getDate();
+          clone.setDate(due.getDate() >= lastDate ? lastDate : due.getDate());
+          break;
+
+        case "weekly":
+          clone.setDate(clone.getDate() - 7);
+          break;
+
+        default:
+          return;
+          break;
+      }
+
+      const formatedDate = clone.toISOString().split("T")[0];
+      if (lastpaymentDate == formatedDate) return;
+
+      updateBillValues(id, "lastpayment", formatedDate, setLoad);
+      if (lastPayment != lastpaymentDate) setLastPaymentDate(formatedDate);
+    } //end of auto pay
+    setArrears(
+      checkingArrears(amount, startDate, lastpaymentDate, dueDate, frenquently),
+    );
+  }, [appUpdate, autopay]);
+
+  useEffect(() => {
+    setColor(currentTextColor(billStatus));
+    setStatusColor(selectThemeColor(billStatus));
 
     if (load == true) {
       const crrBill = currentBill();
@@ -93,42 +165,32 @@ export default function BillCard({
         UpdateBill(crrBill, setLoad);
       }
     } //end of currentBill if
-  }, [status]);
 
-  useEffect(() => {
-    const days = DaysLeft(nextDueDate);
-    const counter = (): number => {
-      switch (frenquently) {
-        case "weekly":
-          return 4;
-          break;
+    const currentDate = new Date();
+    const due = new Date(dueDate);
 
-        case "monthly":
-          return 10;
-          break;
-
-        case "yearlty":
-          return 20;
-          break;
-
-        default:
-          return 0;
-          break;
-      }
-    };
-
-    if (days <= counter() && days > counter() * 0.5) {
-      setBillMessage("Upcoming bill");
-      setBillMessageColor("skyblue");
-    } else if (days <= counter() * 0.5 && counter() > 0) {
+    if (arrears.arrearsCount !== 0) {
       setBillMessage("bill due");
       setBillMessageColor("red");
     } else {
-      setBillMessage("bill up to date");
-      setBillMessageColor("lime");
-    }
-  }, []);
+      const minutesDifference = due.getTime() - currentDate.getTime();
+      const daysLeft = Math.floor(minutesDifference / (1000 * 60 * 60 * 24));
 
+      if (daysLeft <= 5) {
+        setBillMessage("Upcoming bill");
+        setBillMessageColor("skyblue");
+      } else {
+        setBillMessage("bill up to date");
+        setBillMessageColor("lime");
+      }
+    }
+  }, [status, arrears, load]);
+
+  useEffect(() => {
+    if (currentBillId == id) setLoad(billLoading);
+  }, [billLoading]);
+
+/*
   useGSAP(() => {
     gsap.fromTo(
       ".bill-card",
@@ -143,17 +205,22 @@ export default function BillCard({
         opacity: 1,
         boxShadow: "1px 7px 10px rgba(0,0,0,0.5)",
         stagger: 0.2,
-      }
+      },
     );
   });
-
+*/
   return (
     <LoadContext.Provider value={{ load: setLoad }}>
       <BillContext.Provider
-        value={{ statusTheme: status, headColor: color, setTheme: setStatus }}
+        value={{
+          cardId: id,
+          statusTheme: status,
+          headColor: textColor,
+          setTheme: setStatus,
+        }}
       >
         <motion.div
-          className="bill-card relative flex flex-col m-2 w-full sm:max-w-100 p-1 rounded-lg"
+          className="bill-card"
           style={{
             backgroundColor: "whitesmoke",
             boxShadow: `1px 1px 5px black`,
@@ -163,63 +230,231 @@ export default function BillCard({
 
           <BillCardHeader name={title} installment={amount} />
 
-          <BillTables
-            category={category}
-            duration={duration}
-            dueDate={nextDueDate}
-            startDate={startDate}
-            frenquently={frenquently}
-            endDate={endDate}
-          />
+          <div className="bill-main">
+            {/* descriptio section */}
+            <div className="flex flex-col items-center m-2">
+              <label
+                className=" text-blue-300 rounded-md text-md p-1 font-semibold"
+                style={{
+                  textShadow:
+                    "0.5px 0.5px 0.5px white, -0.5px -0.5px 0.1px white",
+                }}
+              >
+                Description
+              </label>
+              <p className="text-sm text-black/40 rounded-md p-2 m-2 ">
+                {description}
+              </p>
+            </div>
 
-          <div
-            className={`${
-              status === "inactive" ? "hidden" : "block"
-            } flex flex-row justify-between`}
-          >
-            <motion.label
-              initial={{
-                scale: 0.9,
-                boxShadow: "none",
-              }}
-              animate={{
-                scale: 1,
-                boxShadow: `1px 9px 20px rgba(0, 0, 0, 0.5)`,
-              }}
-              transition={{
-                duration: 1,
-                repeat: Infinity,
-                repeatType: "reverse",
-              }}
-              className="text-white text-xs self-center font-extrabold p-2 ml-10 w-fit h-fit rounded-sm"
-              style={{
-                backgroundColor: billMessageColor,
-                boxShadow: `1px 9px 20px rgba(0, 0, 0, 0.5)`,
-                textShadow: "1px 1px 1px black",
-              }}
+            <BillTables
+              category={category}
+              duration={duration}
+              dueDate={nextDueDate}
+              startDate={startDate}
+              frenquently={frenquently}
+              endDate={endDate}
+              lastPayment={lastpaymentDate}
+            />
+
+            <AutoPayComponent
+            status={status}
+              autoPay={autopay}
+              bill_id={id}
+              setAutopay={setAutoPay}
+              setLoading={setLoad}
+            />
+
+            {duration !== "continously" && (
+              <BillProgressPaymentComponent
+                lastpayment={lastpaymentDate}
+                startdate={startDate}
+                dueDate={dueDate}
+                endDate={endDate}
+                amount={amount}
+                frequantly={frenquently}
+              />
+            )}
+
+            <div
+              className={`${
+                status === "inactive" ? "hidden" : "block"
+              } flex flex-row items-start justify-evenly m-3`}
             >
-              {billMessage.toUpperCase()}
-            </motion.label>
+              <label
+                className=" text-xs font-bold p-2 w-fit h-fit rounded-sm"
+                style={{ color: billMessageColor }}
+              >
+                {billMessage.toUpperCase()}
+              </label>
+
+              {arrears.arrearsCount !== 0 && !autopay && (
+                <ArrearsComponent
+                  arrears={arrears.arrearsCount}
+                  arrearsAmount={arrears.arrearsAmount}
+                />
+              )}
+            </div>
           </div>
 
-          {/* descriptio section */}
-          <div className="flex flex-col items-center m-2">
-            <label className="text-md text-black/30 font-semibold">
-              Description
-            </label>
-            <p
-              className="text-sm font-bold bg-black/10 font-serif rounded-md text-white p-2 m-2 "
-              style={{
-                textShadow: "0px 0px 2px black",
+          <div className="flex flex-row items-start justify-between">
+            <button
+              className="text-xs text-white m-2 p-2 w-fit rounded-md cursor-pointer"
+              style={{ background: statusColor }}
+              onClick={async () => {
+                if (arrears.arrearsCount == 0) return;
+                const paymentBeforeDueDate = new Date(dueDate);
+
+                switch (frenquently) {
+                  case "yearly":
+                    paymentBeforeDueDate.setFullYear(
+                      paymentBeforeDueDate.getFullYear() - 1,
+                    );
+                    break;
+
+                  case "nonthly":
+                    paymentBeforeDueDate.setDate(1);
+                    paymentBeforeDueDate.setMonth(
+                      paymentBeforeDueDate.getMonth() - 1,
+                    );
+                    break;
+
+                  case "weekly":
+                    paymentBeforeDueDate.setDate(
+                      paymentBeforeDueDate.getDate() - 7,
+                    );
+                    break;
+
+                  default:
+                    break;
+                }
+
+                let setDayDate = paymentBeforeDueDate.getDate();
+
+                if (frenquently == "monthly") {
+                  // getting last daye date
+                  const lastDate = new Date(
+                    paymentBeforeDueDate.getFullYear(),
+                    paymentBeforeDueDate.getMonth() + 1,
+                    0,
+                  ).getDate();
+                  const targetDueDate = new Date(dueDate).getDate();
+
+                  if (lastDate < targetDueDate) setDayDate = lastDate;
+                }
+
+                const data = sessionStorage.getItem("currentUser");
+                if (!data) {
+                  alert("No use data FOUND!");
+                  return;
+                }
+
+                const formatedDate = `${paymentBeforeDueDate.getFullYear()}-${String(paymentBeforeDueDate.getMonth()).padStart(2, "0")}-${String(setDayDate).padStart(2, "0")}`;
+                const currentBill = JSON.parse(data).recurringBills.find(
+                  (bill: Bill) => bill.id === id,
+                );
+                currentBill.lastPayment = formatedDate;
+
+                try {
+                  setLoad(true);
+                  await UpdateBill(currentBill, setLoad);
+                  setLastPaymentDate(formatedDate);
+                  setArrears({ arrearsCount: 0, arrearsAmount: 0.0 });
+                } catch (err: Error | unknown) {
+                  const errorMessage =
+                    err instanceof Error
+                      ? err.message
+                      : "unknown firebase ERROR!...";
+                  setLoad(false);
+                  alert(errorMessage);
+                }
               }}
             >
-              {description}
-            </p>
+              Clear Arrears
+            </button>
+
+            <button
+              className="text-xs m-2 p-2 text-white rounded-md cursor-pointer w-fit"
+              style={{ background: statusColor }}
+              onClick={async () => {
+
+                if(arrears.arrearsCount == 0) return
+                
+                const startHere = new Date((lastpaymentDate != "No payment" && lastpaymentDate != undefined) ? lastpaymentDate : startDate)
+                const newPayment = nextPaymentDate(startHere, dueDate, frenquently)
+
+                if(new Date(newPayment) < new Date(dueDate)){
+
+                setLoad(true)
+                const updateResult = await updateBillValues(id, "lastpayment", newPayment, setLoad)
+                if(updateResult == "Failed to update"){
+                  alert("failed to update!.")
+                  return
+                }
+                setLastPaymentDate(newPayment)
+                
+              }
+            else console.log(`This is the new payment date: ${newPayment}\nThis is the due date: ${dueDate}`)
+
+                
+              }}
+            >
+              Accout payed
+            </button>
           </div>
 
-          <div className="m-2">
-            <button onClick={() => DeleteBill(billId)}>
+          <div className="flex flex-row items-start justify-between m-2">
+            <button
+              className=" cursor-pointer"
+              onClick={async () => {
+                try {
+
+                  await DeleteBill(id);
+                  
+                  const delay = setTimeout(() => {
+                    billChangedTo.current = !billChangedTo.current;
+                    billNotification(billChangedTo.current);
+                    clearTimeout(delay);
+                  }, 1000);
+                } catch (err: Error | unknown) {
+                  const errorMessage =
+                    err instanceof Error
+                      ? err.message
+                      : "unknown firebase ERROR!...";
+                  alert(errorMessage);
+                }
+              }}
+            >
               <TrashIcon className="w-5 h-5 text-red-500" />
+            </button>
+
+            <button
+              className="cursor-pointer"
+              onClick={() => {
+                dispatch(settingSelected("bills"));
+                dispatch(getFormType("edit"));
+                dispatch(onOffSubmit());
+
+                dispatch(
+                  setBillSlice({
+                    id: id,
+                    title: title,
+                    amount: amount,
+                    description: description,
+                    startDate: startDate,
+                    dueDate: dueDate,
+                    endDate: endDate,
+                    category: category,
+                    duration: duration,
+                    frenquently: frenquently,
+                    lastPayment: lastpaymentDate,
+                    AutoPay: autopay,
+                    status: status,
+                  }),
+                );
+              }}
+            >
+              <PencilSquareIcon className="w-5 h-5 text-green-400" />
             </button>
           </div>
         </motion.div>

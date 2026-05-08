@@ -1,17 +1,17 @@
 "use client";
-import LabelInputText from "@/app/ui/submitForms/labelInputText";
-import LabelInputNumber from "@/app/ui/submitForms/labelInputNumber";
+import LabelInputText from "@/app/components/ui/submitForms/labelInputText";
+import LabelInputNumber from "@/app/components/ui/submitForms/labelInputNumber";
 import { useDispatch } from "react-redux";
-import { onOffSubmit } from "../../state management/openSubmition";
+import { onOffSubmit } from "../../state management/slices/openSubmition";
 import { useState } from "react";
 import { AddBudgetExpense } from "@/app/functions/budget/addBudgetExpense";
 
 export default function SubmitBudget() {
   const dispatch = useDispatch();
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState("")
   const [color, setColor] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(0.0)
 
   return (
     <div className="absolute w-screen h-screen overflow-y-auto z-50">
@@ -23,7 +23,7 @@ export default function SubmitBudget() {
           AddBudgetExpense(amount, name, color);
         }}
       >
-        <h1 className="text-black/50 text-2xl font-serif text-center font-bold">
+        <h1 className="submitFormsHeaders">
           Budget Expense
         </h1>
 
@@ -56,23 +56,12 @@ export default function SubmitBudget() {
         </div>
 
         <div className="flex flex-row items-center justify-evenly w-full p-2">
-          <button
-            type="submit"
-            // className="text-green-700 font-medium p-2 w-fit rounded-sm cursor-pointer"
-            className="p-2 text-white font-medium w-fit bg-green-400 rounded-md m-2 cursor-pointer"
-      style={{
-        boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey"
-      }}
-          >
+          <button type="submit" className="submit-btn">
             Submitt
           </button>
 
           <button
-            // className="text-red-700 font-medium p-2 w-fit rounded-sm cursor-pointer"
-            className="p-2 w-fit text-white font-medium bg-red-400 rounded-sm m-2 cursor-pointer"
-      style={{
-        boxShadow: "inset 5px 1px 5px black, inset -2px 2px 5px grey"
-      }}
+            className="cancel-btn"
             type="button"
             onClick={() => dispatch(onOffSubmit())}
           >

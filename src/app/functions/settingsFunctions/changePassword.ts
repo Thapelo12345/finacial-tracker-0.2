@@ -4,9 +4,9 @@ import {
   reauthenticateWithCredential,
   updatePassword,
 } from "firebase/auth";
-import { getMessage } from "@/app/state management/dialogMessage";
-import { openCloseDialog } from "@/app/state management/openCloseDialog";
-import { selectDialog } from "@/app/state management/selectDialog";
+import { getMessage } from "@/app/state management/slices/dialogMessage";
+import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
+import { selectDialog } from "@/app/state management/slices/selectDialog";
 import store from "@/app/state management/store";
 
 export function changingPassword(p1: string, p2: string) {
@@ -48,7 +48,6 @@ export function changingPassword(p1: string, p2: string) {
         console.log(error);
         throw new Error("Reauthentication failed");
       });
-  
   } catch (error) {
     console.log(error);
     store.dispatch(getMessage(`Error: ${error}`));

@@ -3,29 +3,29 @@ import { auth, db } from "../../../../firebase.config";
 import { addDoc } from "firebase/firestore";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import store from "../../state management/store";
-import { selectDialog } from "../../state management/selectDialog";
-import { getMessage } from "../../state management/dialogMessage";
-import { openCloseDialog } from "../../state management/openCloseDialog";
+import { selectDialog } from "../../state management/slices/selectDialog";
+import { getMessage } from "../../state management/slices/dialogMessage";
+import { openCloseDialog } from "../../state management/slices/openCloseDialog";
 
 const googleProvider = new GoogleAuthProvider();
 
 interface user {
   id: string;
   avatar: string;
-  imageId: string,
+  imageId: string;
   name: string;
   email: string;
   budgetAmount: number;
   income: number;
-  transactionTotal: number,
-  transactionExpense: number,
-  budgetExpense:number;
-  budgetSurplus:number;
+  transactionTotal: number;
+  transactionExpense: number;
+  budgetExpense: number;
+  budgetSurplus: number;
   budgetExpenses: [];
   giftCard: number;
-  savings:number;
-  vouchers:number;
-  potsValue:number;
+  savings: number;
+  vouchers: number;
+  potsValue: number;
   pots: [];
   transactions: [];
   recurringBills: [];
@@ -42,13 +42,12 @@ export async function handleGooglAthentication(navigate: NavigateFunction) {
 
     const userExist = query(
       collection(db, "users"),
-      where("id", "==", result.user.uid)
+      where("id", "==", result.user.uid),
     );
 
     const snapshot = await getDocs(userExist);
 
     if (snapshot.empty) {
-      
       const newUser: user = {
         id: result.user.uid,
         avatar: result.user.photoURL || "",
@@ -62,7 +61,7 @@ export async function handleGooglAthentication(navigate: NavigateFunction) {
         budgetExpense: 0,
         budgetSurplus: 0,
         budgetExpenses: [],
-        giftCard:  0,
+        giftCard: 0,
         savings: 0,
         vouchers: 0,
         potsValue: 0,
@@ -74,17 +73,16 @@ export async function handleGooglAthentication(navigate: NavigateFunction) {
       await addDoc(collection(db, "users"), newUser);
       sessionStorage.setItem("currentUser", JSON.stringify(newUser));
     } //end of if
-    
     else {
-  const userData = snapshot.docs[0].data();
-  sessionStorage.setItem("currentUser", JSON.stringify(userData));
+      const userData = snapshot.docs[0].data();
+      sessionStorage.setItem("currentUser", JSON.stringify(userData));
     }
 
     store.dispatch(selectDialog("confirm"));
     store.dispatch(
       getMessage(
-        "Congratulations! You have successfully logged into your account"
-      )
+        "Congratulations! You have successfully logged into your account",
+      ),
     );
     navigate("/expenseApp/dashBoard");
 
@@ -97,7 +95,7 @@ export async function handleGooglAthentication(navigate: NavigateFunction) {
     }, 7000);
   } catch (error) {
     console.log(error);
-    store.dispatch(openCloseDialog())
+    store.dispatch(openCloseDialog());
     alert(error);
   }
 } //end of google auth function

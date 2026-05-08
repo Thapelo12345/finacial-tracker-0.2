@@ -3,7 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface Message {
     dialogMessage: string;
-}
+}   
 
 const initialState:Message = {
     dialogMessage: "Dialog Message here",

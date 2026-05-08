@@ -1,6 +1,6 @@
 "use client";
-import PageHeader from "@/app/ui/pageHeader";
-import BalanceContainer from "@/app/ui/balanceContainer";
+import PageHeader from "@/app/components/ui/pageHeader";
+import BalanceContainer from "@/app/components/ui/balanceContainer";
 import GraphDetails from "@/app/components/budget/graphDetails";
 import Piechart from "@/app/components/budget/piechat";
 import Barchart from "@/app/components/budget/barchat";
@@ -9,15 +9,15 @@ import { collection, getDocs, updateDoc } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/state management/store";
 import { useDispatch } from "react-redux";
-import { onOffSubmit } from "@/app/state management/openSubmition";
-import { settingSelected } from "@/app/state management/selectSubmit";
-import { appUpdated } from "@/app/state management/UpdateAllComponents";
+import { onOffSubmit } from "@/app/state management/slices/openSubmition";
+import { settingSelected } from "@/app/state management/slices/selectSubmit";
+import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
 import { useState, useEffect } from "react";
-import AddItemBtn from "@/app/ui/buttons/addItemBtn";
+import AddItemBtn from "@/app/components/ui/buttons/addItemBtn";
 import { BudgetContext } from "@/app/context/budgetContext";
-import { openCloseDialog } from "@/app/state management/openCloseDialog";
-import { selectDialog } from "@/app/state management/selectDialog";
-import { getMessage } from "@/app/state management/dialogMessage";
+import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
+import { selectDialog } from "@/app/state management/slices/selectDialog";
+import { getMessage } from "@/app/state management/slices/dialogMessage";
 
 interface budgetItem {
   budgetExpenseId: number;
@@ -29,7 +29,7 @@ interface budgetItem {
 export default function Budget() {
   const dispatch = useDispatch();
   const checkUpdate = useSelector(
-    (state: RootState) => state.updateApp.updateApp
+    (state: RootState) => state.updateApp.updateApp,
   );
 
   const [budgetAmount, setBugdetAmount] = useState(0);
@@ -43,7 +43,7 @@ export default function Budget() {
     if (data) {
       const user = JSON.parse(data);
 
-      const surplus = user.budgetAmount - user.budgetExpense
+      const surplus = user.budgetAmount - user.budgetExpense;
 
       setBugdetAmount(user.budgetAmount);
       setBudgetExpense(user.budgetExpense);

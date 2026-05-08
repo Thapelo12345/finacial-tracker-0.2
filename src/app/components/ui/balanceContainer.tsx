@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import gsap from "gsap";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
-import type { RootState } from "../state management/store";
-import BalanceInput from "../components/balanceInput";
+import type { RootState } from "@/app/state management/store";
+import BalanceInput from "../balanceInput";
 
 type Props = {
   activeClick: boolean;
@@ -41,7 +41,7 @@ export default function BalanceContainer({
   });
 
   useEffect(() => {
-    const data = localStorage.getItem("currentUser");
+    const data = sessionStorage.getItem("currentUser");
 
     if (data) {
       const currentUser = JSON.parse(data);

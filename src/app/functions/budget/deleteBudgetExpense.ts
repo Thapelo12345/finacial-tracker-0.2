@@ -6,10 +6,10 @@ import {
   arrayRemove,
 } from "firebase/firestore";
 import store from "../../state management/store";
-import { selectDialog } from "../../state management/selectDialog";
-import { getMessage } from "../../state management/dialogMessage";
-import { openCloseDialog } from "../../state management/openCloseDialog";
-import { appUpdated } from "../../state management/UpdateAllComponents";
+import { selectDialog } from "../../state management/slices/selectDialog";
+import { getMessage } from "../../state management/slices/dialogMessage";
+import { openCloseDialog } from "../../state management/slices/openCloseDialog";
+import { appUpdated } from "../../state management/slices/UpdateAllComponents";
 
 interface BudgetExpense {
   budgetExpenseId: number;
@@ -24,7 +24,7 @@ export async function deleteBudgetExpense(expenseId: number) {
   if (data) {
     const crrUser = JSON.parse(data);
     const crrExpense: BudgetExpense = crrUser.budgetExpenses.find(
-      (expense: BudgetExpense) => expense.budgetExpenseId === expenseId
+      (expense: BudgetExpense) => expense.budgetExpenseId === expenseId,
     );
 
     const newExpense = crrUser.budgetExpense - crrExpense.Amount;
@@ -54,7 +54,7 @@ export async function deleteBudgetExpense(expenseId: number) {
           .then(() => {
             crrUser.budgetExpenses.splice(
               crrUser.budgetExpenses.indexOf(crrExpense),
-              1
+              1,
             );
             crrUser.budgetExpense = Number(newExpense.toFixed(2));
             crrUser.budgetSurplus = Number(newSurplus.toFixed(2));

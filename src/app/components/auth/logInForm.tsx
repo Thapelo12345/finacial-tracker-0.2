@@ -1,8 +1,8 @@
 "use client";
 
 import { UserCircleIcon } from "@heroicons/react/20/solid";
-import LabelInput from "@/app/ui/logInForm/labelInput";
-import { useState } from "react";
+import LabelInput from "@/app/components/ui/logInForm/labelInput";
+import { useState, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { handleGooglAthentication } from "@/app/functions/authFunctions/googleLogIn";
 import EmailAuthentication from "@/app/functions/authFunctions/emailLogIn";
@@ -15,10 +15,10 @@ export default function AuthenticationForm() {
   const navigate = useRouter();
 
   const [formState, setForm] = useState("logIn");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [reEnter, setReEnter] = useState("");
+  const username = useRef("");
+  const email = useRef("");
+  const password = useRef("");
+  const reEnter = useRef("");
 
   const showInputs = () => {
     return formState === "register" || formState === "logIn";
@@ -51,53 +51,52 @@ export default function AuthenticationForm() {
       onSubmit={(e) => {
         e.preventDefault();
         if (formState === "reset") {
-          ResetPassword(email);
+          ResetPassword(email.current);
         } else {
           EmailAuthentication({
             registerLogIn: formState,
-            email,
-            password,
-            reEnterPassword: reEnter,
-            userName: username,
+            email: email.current,
+            password: password.current,
+            reEnterPassword: reEnter.current,
+            userName: username.current,
             NavigateFunction: navigate.push,
           });
         }
         if (formState === "register" || formState === "reset") {
           setForm("logIn");
         }
-
-        setUsername("");
-        setEmail("");
-        setPassword("");
-        setReEnter("");
+        username.current = "";
+        email.current = "";
+        password.current = ""
+        reEnter.current = ""
       }}
       id="formAnimation"
-      className="backface-hidden bg-[whitesmoke] shadow-2xl shadow-black flex flex-col items-center rounded-lg justify-center border-2 border-white w-[83%] sm:w-1/2 p-2 m-2"
+      className="app-logIn"
     >
-      <UserCircleIcon className="w-30 h-20 text-black/50" />
+      <UserCircleIcon className="w-30 h-20 text-blue-300" />
 
       {formState === "register" && (
         <LabelInput
           InputType="text"
           title="Usename"
-          inputedValue={username}
-          sendValue={setUsername}
+          inputedValue={username.current}
+          sendValue={username}
         />
       )}
 
       <LabelInput
         InputType="email"
         title="Email"
-        inputedValue={email}
-        sendValue={setEmail}
+        inputedValue={email.current}
+        sendValue={email}
       />
 
       {showInputs() && (
         <LabelInput
           InputType="password"
           title="Password"
-          inputedValue={password}
-          sendValue={setPassword}
+          inputedValue={password.current}
+          sendValue={password}
         />
       )}
 
@@ -105,8 +104,8 @@ export default function AuthenticationForm() {
         <LabelInput
           InputType="password"
           title="Re-enter passwrd"
-          inputedValue={reEnter}
-          sendValue={setReEnter}
+          inputedValue={reEnter.current}
+          sendValue={reEnter}
         />
       )}
 
@@ -115,7 +114,7 @@ export default function AuthenticationForm() {
       {showInputs() && (
         <div className=" w-full sm:w-1/2 h-20 flex flex-row items-center justify-center">
           <button
-            className="flex flex-row w-fit md:w-50 cursor-pointer text-xs rounded-lg text-black m-2 p-2"
+            className="flex flex-row w-fit md:w-50 cursor-pointer text-xs rounded-2xl text-black/40 m-2 p-2"
             type="button"
             onClick={handleGoogleAuthClick}
           >
@@ -127,7 +126,7 @@ export default function AuthenticationForm() {
               height={32}
               priority
             />
-            <span className="m-2 text-xs">Log in with google acc</span>
+            <span className="m-2">Log in with google acc</span>
           </button>
         </div>
       )}
@@ -137,13 +136,13 @@ export default function AuthenticationForm() {
         {formState === "logIn" && (
           <>
             <button
-              className="text-black self-start p-2 m-2 rounded-lg"
+              className="text-black/40 text-shadow-lg self-start p-2 m-2 rounded-lg"
               type="submit"
             >
               LogIn
             </button>
             <button
-              className="text-black text-xs self-center p-2 m-2 cursor-pointer"
+              className="text-black/40 text-sm self-center p-2 m-2 cursor-pointer"
               type="button"
               onClick={() => setForm("reset")}
             >
@@ -152,7 +151,7 @@ export default function AuthenticationForm() {
 
             {/* reset btn */}
             <button
-              className="text-xs text-black self-end p-2 m-2 rounded-lg cursor-pointer"
+              className="text-sm text-black/50 self-end p-2 m-2 rounded-lg cursor-pointer"
               type="button"
               onClick={() => setForm("register")}
             >

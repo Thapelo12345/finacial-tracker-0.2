@@ -1,6 +1,6 @@
 "use client"
-import PageHeader from "@/app/ui/pageHeader";
-import Balances from "@/app/ui/balance";
+import PageHeader from "@/app/components/ui/pageHeader";
+import Balances from "@/app/components/ui/balance";
 import Widgets from "@/app/components/widgets/widgesContainer";
 
 export default function Overview() {

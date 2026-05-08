@@ -1,5 +1,5 @@
 "use client"
-import SettingsHeader from "@/app/ui/settingsHeader/header";
+import SettingsHeader from "../../ui/settingsHeader/header";
 import { UserIcon } from "@heroicons/react/20/solid";
 import { useContext, useState } from "react";
 import { SettingsContext } from "@/app/context/settingsContext";

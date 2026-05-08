@@ -1,9 +1,9 @@
 "use client";
-import MobileLinks from "@/app/ui/buttons/mobileLinks";
+import MobileLinks from "../ui/buttons/mobileLinks";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useContext } from "react";
 import { SettingsContext } from "@/app/context/settingsContext";
-import MobileAvatar from "@/app/ui/mobileAvatar";
+import MobileAvatar from "../ui/mobileAvatar";
 import {
   HomeIcon,
   ArrowsUpDownIcon,

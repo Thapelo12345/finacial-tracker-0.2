@@ -1,1 +1,53 @@
 @import "tailwindcss";
+
+ 
+@layer components{
+
+    .app-logIn{
+        @apply relative backface-hidden bg-[whitesmoke] shadow-md shadow-black/40 flex flex-col items-center rounded-lg justify-center w-fit sm:w-1/2 p-2 m-2;
+        -webkit-box-reflect: below 5px linear-gradient(transparent, rgba(0,0,0,0.2));
+    }
+
+    .bill-card {
+        @apply relative flex flex-col mb-2 md:m-2 w-full h-130 sm:max-w-100 p-1 rounded-md ;
+    }
+
+    .bill-main{
+        @apply h-[95%] overflow-x-hidden overflow-y-auto;
+    }
+.bill-main::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .bill-main::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .bill-main::-webkit-scrollbar-thumb {
+    background-color: skyblue;
+    box-shadow: 1px 1px 10px white;
+    border-radius: 10px;
+    background-clip: content-box;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1;
+  }
+
+  .bill-card:hover::-webkit-scrollbar-thumb {
+    opacity: 1;
+  }
+
+
+    .submit-btn{
+        @apply p-2 px-4 text-sm text-green-400 font-medium bg-none rounded-lg m-2 cursor-pointer;
+    }
+
+    .cancel-btn{
+        @apply p-2 px-4 text-sm text-red-400 font-medium bg-none rounded-lg m-2 cursor-pointer;
+    }
+
+    .submitFormsHeaders {
+        @apply text-black/50 text-2xl text-center font-bold; 
+    }
+
+} 

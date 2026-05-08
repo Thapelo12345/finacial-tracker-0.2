@@ -1,4 +1,4 @@
-import TransactionCell from "@/app/ui/transaction/transactionCell";
+import TransactionCell from "@/app/components/ui/transaction/transactionCell";
 import type { RootState } from "@/app/state management/store";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
@@ -31,7 +31,7 @@ export default function TransactionTable() {
   }, [checkUpdate]);
 
   return (
-    <div className="w-[99%] h-[87%] overflow-y-auto overflow-x-hidden p-0  md:p-2">
+    <div className="w-[99%] h-[87%] overflow-y-auto overflow-x-hidden p-0 md:p-2">
       <ul className="w-full h-full pr-2 pt-4">
         {transactions.map((transaction, index) => (
           <TransactionCell

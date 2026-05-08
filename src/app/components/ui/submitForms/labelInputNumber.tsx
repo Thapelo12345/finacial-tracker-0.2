@@ -1,17 +1,25 @@
 "use client";
+import { useState, useEffect } from "react"
+import { Exo_2} from "next/font/google";
+
+ const exo_2 =  Exo_2({
+    subsets: ["latin"],
+  })
+
 type Prop = {
   title: string;
   inputType: string;
-  setValue: (value: number) => void;
+  setValue: (value: number)=> void;
+  // amountRef: React.MutableRefObject<number>;
 };
 export default function LabelInputNumber({ title, inputType, setValue }: Prop) {
+
   return (
     <div className="flex flex-col items-start w-fit m-2">
       <label
-        className={`w-full text-black font-serif font-extrabold  rounded-tr-lg rounded-br-lg m-2 text-lg p-2`}
+        className={`${exo_2.className} w-full text-black font-serif font-semibold  rounded-tr-lg rounded-br-lg m-2 text-lg p-2`}
       >
         <input
-          // value={stateValue}
           type={inputType}
           min="0"
           step={0.01}

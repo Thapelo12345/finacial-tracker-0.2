@@ -1,5 +1,5 @@
 import { SettingsContext } from "@/app/context/settingsContext";
-import SettingsHeader from "@/app/ui/settingsHeader/header";
+import SettingsHeader from "../../ui/settingsHeader/header";
 import { UserIcon } from "@heroicons/react/16/solid";
 import { useContext, useState } from "react";
 import { changingPassword } from "@/app/functions/settingsFunctions/changePassword";

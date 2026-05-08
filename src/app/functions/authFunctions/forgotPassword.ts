@@ -1,9 +1,9 @@
 import { auth } from "../../../../firebase.config";
 import { sendPasswordResetEmail } from "firebase/auth";
 import store from "@/app/state management/store";
-import { selectDialog } from "@/app/state management/selectDialog";
-import { openCloseDialog } from "@/app/state management/openCloseDialog";
-import { getMessage } from "@/app/state management/dialogMessage";
+import { selectDialog } from "@/app/state management/slices/selectDialog";
+import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
+import { getMessage } from "@/app/state management/slices/dialogMessage";
 
 export async function ResetPassword(emailAddress: string) {
   store.dispatch(selectDialog("load"));
@@ -13,8 +13,8 @@ export async function ResetPassword(emailAddress: string) {
     .then(() => {
       store.dispatch(
         getMessage(
-          "Reset link has been sent to your email address. if not in inbox check spam"
-        )
+          "Reset link has been sent to your email address. if not in inbox check spam",
+        ),
       );
       store.dispatch(selectDialog("confirm"));
 

@@ -1,5 +1,5 @@
 "use client";
-import LinkBtns from "@/app/ui/buttons/linkBtns";
+import LinkBtns from "../ui/buttons/linkBtns";
 import {
   HomeIcon,
   ArrowsUpDownIcon,

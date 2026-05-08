@@ -1,7 +1,7 @@
 import store from "../../state management/store";
-import { openCloseDialog } from "../../state management/openCloseDialog";
-import { selectDialog } from "../../state management/selectDialog";
-import { getMessage } from "../../state management/dialogMessage";
+import { openCloseDialog } from "../../state management/slices/openCloseDialog";
+import { selectDialog } from "../../state management/slices/selectDialog";
+import { getMessage } from "../../state management/slices/dialogMessage";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../../../firebase.config";
@@ -63,14 +63,14 @@ export default async function EmailAuthentication({
 
         // Then execute the query:
         const querySnapshot2 = await getDocs(
-          query(usersCollection, where("email", "==", email))
+          query(usersCollection, where("email", "==", email)),
         );
 
         if (querySnapshot2.empty) {
           const createNewUser = await createUserWithEmailAndPassword(
             auth,
             email,
-            password
+            password,
           );
 
           if (createNewUser) {
@@ -97,7 +97,7 @@ export default async function EmailAuthentication({
 
             const finalUser = await addDoc(collection(db, "users"), newUser);
             // const userDoc = await getDoc(doc(db, "users", userId));
-            
+
             if (finalUser) {
               store.dispatch(selectDialog("confirm"));
               store.dispatch(getMessage("Your Account has been created"));
@@ -115,7 +115,7 @@ export default async function EmailAuthentication({
       } catch (error) {
         store.dispatch(selectDialog("error"));
         store.dispatch(
-          getMessage("Sorry Something wrong with you credentails")
+          getMessage("Sorry Something wrong with you credentails"),
         );
         alert(error);
         store.dispatch(openCloseDialog());
@@ -129,13 +129,13 @@ export default async function EmailAuthentication({
       const userSignIn = await signInWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
 
       if (userSignIn.user) {
         const searchUser = query(
           collection(db, "users"),
-          where("email", "==", email)
+          where("email", "==", email),
         );
         const snap = await getDocs(searchUser);
 
@@ -145,8 +145,8 @@ export default async function EmailAuthentication({
 
           store.dispatch(
             getMessage(
-              "Congratulation you have successfully LoggedIn to your acount"
-            )
+              "Congratulation you have successfully LoggedIn to your acount",
+            ),
           );
           store.dispatch(selectDialog("confirm"));
           navigate("/expenseApp/dashBoard");
@@ -157,7 +157,7 @@ export default async function EmailAuthentication({
         } //end of snap if
         else {
           store.dispatch(
-            getMessage("Sorry the is no user With Such credentials")
+            getMessage("Sorry the is no user With Such credentials"),
           );
           store.dispatch(selectDialog("error"));
         } //end of snap else

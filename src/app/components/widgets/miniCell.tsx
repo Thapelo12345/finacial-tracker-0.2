@@ -1,4 +1,4 @@
-import Avatar from "@/app/ui/avatar";
+import Avatar from "../ui/avatar";
 import { motion } from "framer-motion";
 
 type Props = {

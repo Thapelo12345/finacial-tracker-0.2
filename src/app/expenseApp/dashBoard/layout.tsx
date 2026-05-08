@@ -3,12 +3,11 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/app/state management/store";
-import { appUpdated } from "@/app/state management/UpdateAllComponents";
+import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
 import SelectDashBoard from "@/app/components/dash/selectDashBoard";
 import { SettingsContext } from "@/app/context/settingsContext";
 import SubmitContainer from "@/app/components/submitForms/submitContainer";
 import SettingsContainer from "@/app/dialogs/settingsContainer";
-import DialogContainer from "@/app/dialogs/dialogContainer";
 
 export default function DashLayout({
   children,
@@ -17,7 +16,7 @@ export default function DashLayout({
 }>) {
   const dispatch = useDispatch();
   const checkUpdate = useSelector(
-    (state: RootState) => state.updateApp.updateApp
+    (state: RootState) => state.updateApp.updateApp,
   );
   const [openSettings, setOpenSettings] = useState(false);
   const [clickedBtn, setClickedBtn] = useState("");

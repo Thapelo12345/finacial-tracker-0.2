@@ -1,5 +1,3 @@
-"use client"
-// import DialogContainer from "../dialogs/dialogContainer";
 export default function ExpenseApp(
     {
   children,
@@ -11,7 +9,6 @@ export default function ExpenseApp(
         <div
          className="relative z-10 w-screen h-screen"
          >
-            {/* <DialogContainer /> */}
             { children}
          </div>
     )

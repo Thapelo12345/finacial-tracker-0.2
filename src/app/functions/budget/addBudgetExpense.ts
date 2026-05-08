@@ -1,10 +1,10 @@
 import { getDocs, arrayUnion, collection, updateDoc } from "firebase/firestore";
 import { db } from "../../../../firebase.config";
 import store from "../../state management/store";
-import { selectDialog } from "../../state management/selectDialog";
-import { openCloseDialog } from "../../state management/openCloseDialog";
-import { getMessage } from "../../state management/dialogMessage";
-import { appUpdated } from "../../state management/UpdateAllComponents";
+import { selectDialog } from "../../state management/slices/selectDialog";
+import { openCloseDialog } from "../../state management/slices/openCloseDialog";
+import { getMessage } from "../../state management/slices/dialogMessage";
+import { appUpdated } from "../../state management/slices/UpdateAllComponents";
 
 interface budgetExpense {
   budgetExpenseId: number;
@@ -16,7 +16,7 @@ interface budgetExpense {
 export async function AddBudgetExpense(
   amount: number,
   title: string,
-  color: string
+  color: string,
 ) {
   if (color !== "") {
     const data = sessionStorage.getItem("currentUser");
@@ -39,7 +39,7 @@ export async function AddBudgetExpense(
         if (newSurplus >= 0) {
           const getDocuments = await getDocs(collection(db, "users"));
           const foundUser = getDocuments.docs.find(
-            (doc) => doc.data().email === crrUser.email
+            (doc) => doc.data().email === crrUser.email,
           );
 
           if (!foundUser) {
@@ -73,7 +73,7 @@ export async function AddBudgetExpense(
               .catch(() => {
                 store.dispatch(selectDialog("error"));
                 store.dispatch(
-                  getMessage("Sorry update has Failed, Please Try again")
+                  getMessage("Sorry update has Failed, Please Try again"),
                 );
                 // store.dispatch(openCloseDialog());
               });
@@ -88,7 +88,7 @@ export async function AddBudgetExpense(
       else {
         store.dispatch(selectDialog("error"));
         store.dispatch(
-          getMessage("An expense cant be more than the budget amount!")
+          getMessage("An expense cant be more than the budget amount!"),
         );
         store.dispatch(openCloseDialog());
       } //end o greater than else

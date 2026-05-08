@@ -6,82 +6,61 @@ import {
   arrayRemove,
 } from "firebase/firestore";
 import store from "@/app/state management/store";
-import { selectDialog } from "@/app/state management/selectDialog";
-import { getMessage } from "@/app/state management/dialogMessage";
-import { openCloseDialog } from "@/app/state management/openCloseDialog";
-import { appUpdated } from "@/app/state management/UpdateAllComponents";
+import { selectDialog } from "@/app/state management/slices/selectDialog";
+import { getMessage } from "@/app/state management/slices/dialogMessage";
+import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
+import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
+import Bill from "@/app/interFaces/billInterface";
 
-interface Bill {
-  id: number;
-  title: string;
-  description: string;
-  amount: number;
-  startDate: string;
-  dueDate: string;
-  endDate: string;
-  category: string;
-  duration: string;
-  frenquently: string;
-  status: string;
-  autoPay: boolean;
-  settledBill: boolean;
-  daysLeft: number;
-}
 
 export default async function DeleteBill(billId: number) {
   const data = sessionStorage.getItem("currentUser");
 
-  if (data) {
+  if (!data) {
+    alert("No user data FOUND")
+    return
+  }
     const crrUser = JSON.parse(data);
 
     store.dispatch(selectDialog("load"));
     store.dispatch(openCloseDialog());
 
     const crrBill = crrUser.recurringBills.find(
-      (bill: Bill) => bill.id === billId
+      (bill: Bill) => bill.id === billId,
     );
 
     try {
+      if(!navigator.onLine) throw new Error("No stable internet connection!...")
+
       const getDocuments = await getDocs(collection(db, "users"));
       const matchingUser = getDocuments.docs.find(
-        (doc) => doc.data().email === crrUser.email
+        (doc) => doc.data().email === crrUser.email,
       );
 
-      if (!matchingUser) {
-        store.dispatch(getMessage("User credentials not found"));
-        store.dispatch(selectDialog("error"));
-      } //end of match user if
-      else {
-        await updateDoc(matchingUser.ref, {
-          recurringBills: arrayRemove(crrBill),
-        })
-          .then(() => {
-            crrUser.recurringBills.splice(
-              crrUser.recurringBills.indexOf(crrBill),
-              1
-            );
-            sessionStorage.setItem("currentUser", JSON.stringify(crrUser));
+      if (!matchingUser) throw new Error("User credentials not found");
 
-            store.dispatch(getMessage("Bill deleted successfully"));
-            store.dispatch(selectDialog("confirm"));
+      if(!navigator.onLine) throw new Error("No stable internet connection!...")
+      await updateDoc(matchingUser.ref, {
+        recurringBills: arrayRemove(crrBill),
+      });
+      crrUser.recurringBills.splice(crrUser.recurringBills.indexOf(crrBill), 1);
+      sessionStorage.setItem("currentUser", JSON.stringify(crrUser));
 
-            setTimeout(() => {
-              store.dispatch(appUpdated());
-              store.dispatch(openCloseDialog());
-            }, 2000);
-          })
-          .catch((error) => console.log(error));
-      } //end of user match else
-    } catch (error) {
-      //end of try
+      store.dispatch(getMessage("Bill deleted successfully"));
+      store.dispatch(selectDialog("confirm"));
 
-      console.log(error);
-      store.dispatch(getMessage("Unable to connect to database"));
+      const delay = setTimeout(() => {
+        store.dispatch(openCloseDialog());
+        // store.dispatch(appUpdated())
+        clearTimeout(delay)
+      }, 1500);
+    
+    } catch (error: Error | unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "unknown error occured";
+
+      store.dispatch(getMessage(errorMessage));
       store.dispatch(selectDialog("error"));
     } //end of catch
-  } //end of data if
-  else {
-    store.dispatch(getMessage("User credentials not found"));
-    store.dispatch(selectDialog("error"));
-  }
+ 
 }

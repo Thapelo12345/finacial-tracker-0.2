@@ -44,10 +44,8 @@ export default function TransactionCell({
       className="transac group shadow-md flex flex-row flex-nowrap items-start m-1 md:m-2 w-full p-1 md:p-2"
       whileHover={{
         scale: 1.01,
-        boxShadow:
-          "0px 10px 10px rgba(0,0,0, 0.7), inset 0px 0px 3px rgba(0, 0, 0, 0.5)",
         backgroundColor: "white",
-        borderRadius: "105px",
+        borderRadius: "50px",
       }}
       transition={{
         duration: 0.5,
@@ -88,11 +86,7 @@ export default function TransactionCell({
       {/* Description tag */}
 
       <div
-        className="bg-[whitesmoke] font-serif hidden group-hover:block left-48 rounded-md top-10 z-10 absolute p-2"
-        style={{
-          boxShadow:
-            "-1px -9px 15px rgba(0, 0, 0, 0.5), 1px 9px 10px rgba(0, 0, 0, 0.5), inset 2px 2px 6px black, inset -2px -2px 6px white",
-        }}
+        className="border border-black/20 bg-white font-serif hidden group-hover:block left-48 rounded-md top-10 z-10 absolute p-2"
       >
         <p className="text-black/50 text-xs font-extrabold p-2">
           {Description}

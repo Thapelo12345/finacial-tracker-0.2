@@ -1,10 +1,10 @@
 import { GetDate } from "../bills/getcurrentDate";
 import { updateDoc, arrayUnion, getDocs, collection } from "firebase/firestore";
 import { db } from "../../../../firebase.config";
-import { openCloseDialog } from "../../state management/openCloseDialog";
-import { getMessage } from "../../state management/dialogMessage";
-import { selectDialog } from "../../state management/selectDialog";
-import { appUpdated } from "../../state management/UpdateAllComponents";
+import { openCloseDialog } from "../../state management/slices/openCloseDialog";
+import { getMessage } from "../../state management/slices/dialogMessage";
+import { selectDialog } from "../../state management/slices/selectDialog";
+import { appUpdated } from "../../state management/slices/UpdateAllComponents";
 import store from "../../state management/store";
 
 type Transaction = {

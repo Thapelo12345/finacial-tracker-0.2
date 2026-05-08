@@ -1,10 +1,10 @@
 import { db } from "../../../../firebase.config";
 import { getDocs, collection, updateDoc } from "firebase/firestore";
 import store from "@/app/state management/store";
-import { selectDialog } from "@/app/state management/selectDialog";
-import { getMessage } from "@/app/state management/dialogMessage";
-import { openCloseDialog } from "@/app/state management/openCloseDialog";
-import { appUpdated } from "@/app/state management/UpdateAllComponents";
+import { selectDialog } from "@/app/state management/slices/selectDialog";
+import { getMessage } from "@/app/state management/slices/dialogMessage";
+import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
+import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
 
 export default async function UpdateUserName(username: string) {
   const data = sessionStorage.getItem("currentUser");
@@ -18,7 +18,7 @@ export default async function UpdateUserName(username: string) {
     try {
       const getDocuments = await getDocs(collection(db, "users"));
       const matchingUser = getDocuments.docs.find(
-        (doc) => doc.data().email === user.email
+        (doc) => doc.data().email === user.email,
       );
       if (matchingUser) {
         await updateDoc(matchingUser.ref, {
