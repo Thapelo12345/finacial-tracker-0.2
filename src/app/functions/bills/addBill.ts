@@ -8,6 +8,7 @@ import { getMessage } from "../../state management/slices/dialogMessage";
 import { appUpdated } from "../../state management/slices/UpdateAllComponents";
 import Bill from "@/app/interFaces/billInterface";
 
+
 // This function adds a new bill to the user's recurring bills in the Firestore database. It retrieves the current user's data from session storage, creates a new bill object, and updates the user's document in Firestore with the new bill. It also handles success and error messages using the application's dialog system.
 export async function AddBill(
   billTitle: string,
@@ -29,10 +30,18 @@ export async function AddBill(
   }
 
   const crrUser = JSON.parse(data);
-  const billId = crrUser.recurringBills.length + 1;
+
+  const billId = ()=>{
+    const allIds:number[] = crrUser.recurringBills.map((bill:Bill)=> {return bill.id})
+    console.table(allIds)
+    let counter = 0
+    do{counter++}
+    while(allIds.indexOf(counter) != -1)
+    return counter
+  }
 
   const newBill: Bill = {
-    id: billId,
+    id: billId(),
     title: billTitle,
     description: billDescription,
     amount: billAmount,

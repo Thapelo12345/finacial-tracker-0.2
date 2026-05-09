@@ -20,7 +20,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { onOffSubmit } from "@/app/state management/slices/openSubmition";
 import { setBillSlice } from "@/app/state management/slices/bill";
-import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
 import { settingSelected } from "@/app/state management/slices/selectSubmit";
 import { UpdateBill } from "@/app/functions/bills/updateBill";
 import { updateBillValues } from "@/app/functions/bills/UpdateBillValues";

@@ -31,9 +31,42 @@ export default function BillsContainer({setPaid, setDue, setUpcoming}:PROPS) {
     let paidBills = 0, dueBills = 0, upcomingBills = 0
 
     user.recurringBills.forEach((bill:Bill)=>{
-      if(bill.status == "inactive") return
+      if(bill.status == "inactive" || bill.status == "pause") return
 
-      if(bill.lastPayment !== "No payment" && bill.lastPayment != undefined){
+      if(bill.AutoPay){
+        const due = new Date(bill.dueDate)
+        const currentDate = new Date()
+
+        const minutesDifference = due.getTime() - currentDate.getTime();
+        const daysLeft = Math.floor(minutesDifference / (1000 * 60 * 60 * 24));
+
+        switch(bill.frenquently){
+    
+          case "monthly":
+            const start = due
+            start.setDate(1)
+            start.setMonth(start.getMonth() - 1)
+            const lastDate = new Date(start.getFullYear(),start.getMonth() + 1,0);
+            lastDate.getDate() < due.getDate() ? start.setDate(lastDate.getDate()) : start.setDate(due.getDate())
+            bill.lastPayment = start.toISOString().split("T")[0]
+            break
+
+          case "weekly":
+            const cloneDate = due
+            cloneDate.setDate(cloneDate.getDate() - 7)
+            if(cloneDate.getTime() > new Date(bill.startDate).getTime()) bill.lastPayment = cloneDate.toISOString().split("T")[0]
+            break;
+
+          default:
+            break
+            return
+        }
+
+        if(daysLeft <= 5) upcomingBills += bill.amount
+        else paidBills += bill.amount
+      }//end of if
+
+      else if(bill.lastPayment !== "No payment" && bill.lastPayment != undefined){
         
         let nextpayment = new Date(nextPaymentDate(new Date(bill.lastPayment), bill.dueDate, bill.frenquently))
 
@@ -65,8 +98,6 @@ export default function BillsContainer({setPaid, setDue, setUpcoming}:PROPS) {
         }
      
       }//end of else
-      
-      
     })
 
     setBills(user.recurringBills)
