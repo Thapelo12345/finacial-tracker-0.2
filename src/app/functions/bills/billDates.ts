@@ -1,10 +1,10 @@
-function GetDate(){
-const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    return  `${year}-${month}-${day}`;
-}//end of get date function
+function GetDate() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+} //end of get date function
 
 function validatePaymentIntervalStrict(
   startDate: Date | string,
@@ -129,7 +129,6 @@ function nextPaymentDate(start: Date, due: string, frequently: string) {
   let formatedTime = "";
 
   if (frequently == "monthly") {
-
     if (
       start.getDate() == targetDate ||
       !(
@@ -155,9 +154,9 @@ function nextPaymentDate(start: Date, due: string, frequently: string) {
     }
   } //end of monthly frequently
   else {
-    frequently === "weekly"
-      ? newDate.setDate(start.getDate() + 7)
-      : newDate.setFullYear(start.getFullYear() + 1);
+    if (frequently === "weekly") newDate.setDate(start.getDate() + 7);
+    else newDate.setFullYear(start.getFullYear() + 1);
+
     formatedTime = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, "0")}-${String(newDate.getDate()).padStart(2, "0")}`;
   } //end of weekly else if
 
@@ -189,17 +188,19 @@ function checkingArrears(
   let arrearsCount = 0,
     arrearsAmount = 0;
 
-  let startingDate = lastpayment === "No payment" ? new Date(startdate) : new Date(lastpayment);
+  let startingDate =
+    lastpayment === "No payment" ? new Date(startdate) : new Date(lastpayment);
   const due = new Date(dueDate);
 
   while (startingDate < due) {
-    startingDate = new Date(nextPaymentDate(startingDate, dueDate, continously));
+    startingDate = new Date(
+      nextPaymentDate(startingDate, dueDate, continously),
+    );
 
-    if(startingDate.getTime() == due.getTime()) break
-    
-      arrearsCount++;
-      arrearsAmount += amount;
+    if (startingDate.getTime() == due.getTime()) break;
 
+    arrearsCount++;
+    arrearsAmount += amount;
   } //end of while loop
 
   return { arrearsCount, arrearsAmount };

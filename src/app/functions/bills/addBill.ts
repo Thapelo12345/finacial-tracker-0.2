@@ -86,7 +86,7 @@ export async function AddBill(
 
     setTimeout(() => {
       store.dispatch(openCloseDialog());
-    }, 2000);
+    }, 1500);
   } catch (error: Error | unknown) {
     const errorMessage =
       error instanceof Error ? error.message : "An unknown error occurred";

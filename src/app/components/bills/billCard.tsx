@@ -413,11 +413,9 @@ export default function BillCard({
                 try {
                   await DeleteBill(id);
 
-                  const delay = setTimeout(() => {
-                    billChangedTo.current = !billChangedTo.current;
-                    billNotification(billChangedTo.current);
-                    clearTimeout(delay);
-                  }, 1000);
+                  billChangedTo.current = !billChangedTo.current;
+                  billNotification(billChangedTo.current);
+                  
                 } catch (err: Error | unknown) {
                   const errorMessage =
                     err instanceof Error
