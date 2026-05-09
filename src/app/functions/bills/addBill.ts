@@ -2,12 +2,12 @@
 import { GetDate } from "./billDates";
 import { db } from "../../../../firebase.config";
 import { getDocs, collection, updateDoc, arrayUnion } from "firebase/firestore";
-import store from "../../state management/store";
-import { selectDialog } from "../../state management/slices/selectDialog";
-import { openCloseDialog } from "../../state management/slices/openCloseDialog";
-import { getMessage } from "../../state management/slices/dialogMessage";
-import { appUpdated } from "../../state management/slices/UpdateAllComponents";
-import { setAppLoadingStatus } from "@/app/state management/slices/loadStatus"; 
+import store from "../../state_management/store";
+import { selectDialog } from "../../state_management/slices/selectDialog";
+import { openCloseDialog } from "../../state_management/slices/openCloseDialog";
+import { getMessage } from "../../state_management/slices/dialogMessage";
+import { appUpdated } from "../../state_management/slices/UpdateAllComponents";
+import { setAppLoadingStatus } from "@/app/state_management/slices/loadStatus"; 
 import Bill from "@/app/interFaces/billInterface";
 
 // This function adds a new bill to the user's recurring bills in the Firestore database. It retrieves the current user's data from session storage, creates a new bill object, and updates the user's document in Firestore with the new bill. It also handles success and error messages using the application's dialog system.

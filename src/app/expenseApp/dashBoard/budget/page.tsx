@@ -7,17 +7,17 @@ import Barchart from "@/app/components/budget/barchat";
 import { db } from "../../../../../firebase.config";
 import { collection, getDocs, updateDoc } from "firebase/firestore";
 import { useSelector } from "react-redux";
-import { RootState } from "@/app/state management/store";
+import { RootState } from "@/app/state_management/store";
 import { useDispatch } from "react-redux";
-import { onOffSubmit } from "@/app/state management/slices/openSubmition";
-import { settingSelected } from "@/app/state management/slices/selectSubmit";
-import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
+import { onOffSubmit } from "@/app/state_management/slices/openSubmition";
+import { settingSelected } from "@/app/state_management/slices/selectSubmit";
+import { appUpdated } from "@/app/state_management/slices/UpdateAllComponents";
 import { useState, useEffect } from "react";
 import AddItemBtn from "@/app/components/ui/buttons/addItemBtn";
 import { BudgetContext } from "@/app/context/budgetContext";
-import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
-import { selectDialog } from "@/app/state management/slices/selectDialog";
-import { getMessage } from "@/app/state management/slices/dialogMessage";
+import { openCloseDialog } from "@/app/state_management/slices/openCloseDialog";
+import { selectDialog } from "@/app/state_management/slices/selectDialog";
+import { getMessage } from "@/app/state_management/slices/dialogMessage";
 
 interface budgetItem {
   budgetExpenseId: number;

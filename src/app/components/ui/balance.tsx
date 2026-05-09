@@ -1,6 +1,6 @@
 import BalanceContainer from "./balanceContainer";
 import { useSelector } from "react-redux";
-import type { RootState } from "../state management/store";
+import type { RootState } from "@/app/state_management/store";
 import { useState, useEffect } from "react";
 
 export default function Balances() {

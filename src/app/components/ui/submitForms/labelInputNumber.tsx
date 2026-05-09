@@ -1,5 +1,4 @@
 "use client";
-import { useState, useEffect } from "react"
 import { Exo_2} from "next/font/google";
 
  const exo_2 =  Exo_2({
@@ -10,7 +9,6 @@ type Prop = {
   title: string;
   inputType: string;
   setValue: (value: number)=> void;
-  // amountRef: React.MutableRefObject<number>;
 };
 export default function LabelInputNumber({ title, inputType, setValue }: Prop) {
 

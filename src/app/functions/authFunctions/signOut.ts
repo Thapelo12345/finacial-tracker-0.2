@@ -1,9 +1,9 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../../../../firebase.config";
-import store from "@/app/state management/store";
-import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
-import { selectDialog } from "@/app/state management/slices/selectDialog";
-import { getMessage } from "@/app/state management/slices/dialogMessage";
+import store from "@/app/state_management/store";
+import { openCloseDialog } from "@/app/state_management/slices/openCloseDialog";
+import { selectDialog } from "@/app/state_management/slices/selectDialog";
+import { getMessage } from "@/app/state_management/slices/dialogMessage";
 
 type NavigateFunction = (path: string) => void;
 

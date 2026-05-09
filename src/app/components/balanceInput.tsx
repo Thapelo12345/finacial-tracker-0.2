@@ -3,8 +3,8 @@ import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import { useContext, useState } from "react";
 import { BudgetContext } from "@/app/context/budgetContext";
 import { useDispatch } from "react-redux";
-import { selectDialog } from "../state management/slices/selectDialog";
-import { openCloseDialog } from "../state management/slices/openCloseDialog";
+import { selectDialog } from "../state_management/slices/selectDialog";
+import { openCloseDialog } from "../state_management/slices/openCloseDialog";
 
 type Props = {
   currentBalance: number;

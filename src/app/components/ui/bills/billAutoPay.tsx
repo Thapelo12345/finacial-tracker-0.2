@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setAppLoadingStatus } from "@/app/state_management/slices/loadStatus";
 import { updateBillValues } from "@/app/functions/bills/UpdateBillValues";
 
 type PROP = {
@@ -16,6 +18,8 @@ export default function AutoPayComponent({
   setAutopay,
   setLoading,
 }: PROP) {
+
+  const dispatch = useDispatch()
   const [clicked, setClicked] = useState(autoPay);
 
   return (
@@ -27,6 +31,7 @@ export default function AutoPayComponent({
         onClick={async () => {
           const oppositeAutoPay = !autoPay;
           setLoading(true);
+          dispatch(setAppLoadingStatus())
           const updateResult = await updateBillValues(
             bill_id,
             "autopay",

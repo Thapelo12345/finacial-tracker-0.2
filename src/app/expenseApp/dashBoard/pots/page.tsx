@@ -6,11 +6,10 @@ import { useState, useEffect } from "react";
 import { db } from "../../../../../firebase.config";
 import { collection, getDocs, updateDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
-import { selectDialog } from "@/app/state management/slices/selectDialog";
-import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
-import { getMessage } from "@/app/state management/slices/dialogMessage";
-import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
-// import AddItemBtn from "@/app/ui/buttons/addItemBtn";
+import { selectDialog } from "@/app/state_management/slices/selectDialog";
+import { openCloseDialog } from "@/app/state_management/slices/openCloseDialog";
+import { getMessage } from "@/app/state_management/slices/dialogMessage";
+import { appUpdated } from "@/app/state_management/slices/UpdateAllComponents";
 
 export default function Pots() {
   const dispatch = useDispatch();

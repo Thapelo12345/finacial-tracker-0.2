@@ -2,7 +2,7 @@
 import LabelInputText from "@/app/components/ui/submitForms/labelInputText";
 import LabelInputNumber from "@/app/components/ui/submitForms/labelInputNumber";
 import { useDispatch } from "react-redux";
-import { onOffSubmit } from "../../state management/slices/openSubmition";
+import { onOffSubmit } from "../../state_management/slices/openSubmition";
 import { useState } from "react";
 import { AddBudgetExpense } from "@/app/functions/budget/addBudgetExpense";
 

@@ -5,12 +5,12 @@ import {
   updateDoc,
   arrayRemove,
 } from "firebase/firestore";
-import store from "@/app/state management/store";
-import { selectDialog } from "@/app/state management/slices/selectDialog";
-import { getMessage } from "@/app/state management/slices/dialogMessage";
-import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
-import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
-import { setAppLoadingStatus } from "@/app/state management/slices/loadStatus";
+import store from "@/app/state_management/store";
+import { selectDialog } from "@/app/state_management/slices/selectDialog";
+import { getMessage } from "@/app/state_management/slices/dialogMessage";
+import { openCloseDialog } from "@/app/state_management/slices/openCloseDialog";
+import { appUpdated } from "@/app/state_management/slices/UpdateAllComponents";
+import { setAppLoadingStatus } from "@/app/state_management/slices/loadStatus";
 import Bill from "@/app/interFaces/billInterface";
 
 export default async function DeleteBill(billId: number) {

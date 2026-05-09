@@ -1,7 +1,7 @@
 import DialogContainer from "./dialogs/dialogContainer";
 import "./globals.css";
 import { Exo_2 } from "next/font/google"
-import { ReduxProvider } from "./state management/store/Providers";
+import { ReduxProvider } from "./state_management/store/Providers";
 
 const exo_2 = Exo_2({
   subsets: ['latin'],

@@ -13,10 +13,10 @@ import {
 import { db } from "../../../../../firebase.config";
 import { getDocs, collection, updateDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
-import { selectDialog } from "@/app/state management/slices/selectDialog";
-import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
-import { getMessage } from "@/app/state management/slices/dialogMessage";
-import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
+import { selectDialog } from "@/app/state_management/slices/selectDialog";
+import { openCloseDialog } from "@/app/state_management/slices/openCloseDialog";
+import { getMessage } from "@/app/state_management/slices/dialogMessage";
+import { appUpdated } from "@/app/state_management/slices/UpdateAllComponents";
 import { SettingsContext } from "@/app/context/settingsContext";
 
 export default function UploadImages() {

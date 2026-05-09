@@ -1,9 +1,9 @@
 import { auth } from "../../../../firebase.config";
 import { sendPasswordResetEmail } from "firebase/auth";
-import store from "@/app/state management/store";
-import { selectDialog } from "@/app/state management/slices/selectDialog";
-import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
-import { getMessage } from "@/app/state management/slices/dialogMessage";
+import store from "@/app/state_management/store";
+import { selectDialog } from "@/app/state_management/slices/selectDialog";
+import { openCloseDialog } from "@/app/state_management/slices/openCloseDialog";
+import { getMessage } from "@/app/state_management/slices/dialogMessage";
 
 export async function ResetPassword(emailAddress: string) {
   store.dispatch(selectDialog("load"));

@@ -1,10 +1,10 @@
 import { db } from "../../../../firebase.config";
 import { getDocs, collection, updateDoc } from "firebase/firestore";
-import store from "@/app/state management/store";
-import { selectDialog } from "@/app/state management/slices/selectDialog";
-import { getMessage } from "@/app/state management/slices/dialogMessage";
-import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
-import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
+import store from "@/app/state_management/store";
+import { selectDialog } from "@/app/state_management/slices/selectDialog";
+import { getMessage } from "@/app/state_management/slices/dialogMessage";
+import { openCloseDialog } from "@/app/state_management/slices/openCloseDialog";
+import { appUpdated } from "@/app/state_management/slices/UpdateAllComponents";
 
 export default async function UpdateUserName(username: string) {
   const data = sessionStorage.getItem("currentUser");

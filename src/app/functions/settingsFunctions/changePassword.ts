@@ -4,10 +4,10 @@ import {
   reauthenticateWithCredential,
   updatePassword,
 } from "firebase/auth";
-import { getMessage } from "@/app/state management/slices/dialogMessage";
-import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
-import { selectDialog } from "@/app/state management/slices/selectDialog";
-import store from "@/app/state management/store";
+import { getMessage } from "@/app/state_management/slices/dialogMessage";
+import { openCloseDialog } from "@/app/state_management/slices/openCloseDialog";
+import { selectDialog } from "@/app/state_management/slices/selectDialog";
+import store from "@/app/state_management/store";
 
 export function changingPassword(p1: string, p2: string) {
   store.dispatch(selectDialog("load"));

@@ -6,7 +6,7 @@ import MiniBillsCell from "./miniBillsCell";
 import { useState, useEffect } from "react";
 import { getNextDueDate } from "@/app/functions/bills/billDates";
 import { DaysLeft } from "@/app/functions/bills/billDates";
-import type { RootState } from "../../state management/store";
+import type { RootState } from "@/app/state_management/store";
 import Bill from "@/app/interFaces/billInterface";
 
 type Prop = {

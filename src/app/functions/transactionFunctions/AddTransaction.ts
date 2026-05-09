@@ -1,11 +1,11 @@
 import { GetDate } from "../bills/billDates";
 import { updateDoc, arrayUnion, getDocs, collection } from "firebase/firestore";
 import { db } from "../../../../firebase.config";
-import { openCloseDialog } from "../../state management/slices/openCloseDialog";
-import { getMessage } from "../../state management/slices/dialogMessage";
-import { selectDialog } from "../../state management/slices/selectDialog";
-import { appUpdated } from "../../state management/slices/UpdateAllComponents";
-import store from "../../state management/store";
+import { openCloseDialog } from "../../state_management/slices/openCloseDialog";
+import { getMessage } from "../../state_management/slices/dialogMessage";
+import { selectDialog } from "../../state_management/slices/selectDialog";
+import { appUpdated } from "../../state_management/slices/UpdateAllComponents";
+import store from "../../state_management/store";
 
 type Transaction = {
   Name: string;

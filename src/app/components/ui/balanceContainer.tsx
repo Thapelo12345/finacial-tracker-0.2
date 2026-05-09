@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import gsap from "gsap";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
-import type { RootState } from "@/app/state management/store";
+import type { RootState } from "@/app/state_management/store";
 import BalanceInput from "../balanceInput";
 
 type Props = {
@@ -68,7 +68,6 @@ export default function BalanceContainer({
       }}
     >
       <h4
-        // className="group-hover:text-white text-black text-xs font-light"
         className={`
         ${amount >= 0 ? "text-black" : "text-red-600"}
         group-hover:text-white text-xs font-light`}
@@ -77,7 +76,6 @@ export default function BalanceContainer({
       </h4>
       {!activateInput && (
         <h2
-          //  className="group-hover:text-white text-black font-medium text-lg truncate"
           className={`group-hover:text-white
           ${amount >= 0 ? "text-black" : "text-red-600"}
           font-medium text-lg truncate`}

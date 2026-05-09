@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import type { RootState } from "@/app/state management/store";
-import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
+import type { RootState } from "@/app/state_management/store";
+import { appUpdated } from "@/app/state_management/slices/UpdateAllComponents";
 import SelectDashBoard from "@/app/components/dash/selectDashBoard";
 import { SettingsContext } from "@/app/context/settingsContext";
 import SubmitContainer from "@/app/components/submitForms/submitContainer";

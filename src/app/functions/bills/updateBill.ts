@@ -7,12 +7,12 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import Bill from "@/app/interFaces/billInterface";
-import store from "@/app/state management/store";
-import { getMessage } from "@/app/state management/slices/dialogMessage";
-import { selectDialog } from "@/app/state management/slices/selectDialog";
-import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
-import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
-import { setAppLoadingStatus } from "@/app/state management/slices/loadStatus";
+import store from "@/app/state_management/store";
+import { getMessage } from "@/app/state_management/slices/dialogMessage";
+import { selectDialog } from "@/app/state_management/slices/selectDialog";
+import { openCloseDialog } from "@/app/state_management/slices/openCloseDialog";
+import { appUpdated } from "@/app/state_management/slices/UpdateAllComponents";
+import { setAppLoadingStatus } from "@/app/state_management/slices/loadStatus";
 
 export async function UpdateBill(
   bill: Bill,

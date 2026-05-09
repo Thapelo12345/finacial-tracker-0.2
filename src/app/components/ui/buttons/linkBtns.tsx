@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { cloneElement, isValidElement } from "react";
 import type { ReactElement } from "react";
 import { useSelector } from "react-redux";
-import type { RootState } from "@/app/state management/store";
+import type { RootState } from "@/app/state_management/store";
 
 type Props = {
   pageUrl: string;

@@ -5,11 +5,11 @@ import {
   updateDoc,
   arrayRemove,
 } from "firebase/firestore";
-import store from "../../state management/store";
-import { selectDialog } from "../../state management/slices/selectDialog";
-import { getMessage } from "../../state management/slices/dialogMessage";
-import { openCloseDialog } from "../../state management/slices/openCloseDialog";
-import { appUpdated } from "../../state management/slices/UpdateAllComponents";
+import store from "../../state_management/store";
+import { selectDialog } from "../../state_management/slices/selectDialog";
+import { getMessage } from "../../state_management/slices/dialogMessage";
+import { openCloseDialog } from "../../state_management/slices/openCloseDialog";
+import { appUpdated } from "../../state_management/slices/UpdateAllComponents";
 
 interface BudgetExpense {
   budgetExpenseId: number;

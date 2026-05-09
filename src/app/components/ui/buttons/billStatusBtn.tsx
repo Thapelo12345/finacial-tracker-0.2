@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { useDispatch } from "react-redux";
 import { BillContext, LoadContext } from "@/app/context/billContext";
 import { updateBillValues } from "@/app/functions/bills/UpdateBillValues";
-import { setAppLoadingStatus } from "@/app/state management/slices/loadStatus";
+import { setAppLoadingStatus } from "@/app/state_management/slices/loadStatus";
 
 const statusArray: string[]= ["active", "pause", "inactive"];
 

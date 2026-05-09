@@ -1,7 +1,7 @@
-import store from "../../state management/store";
-import { openCloseDialog } from "../../state management/slices/openCloseDialog";
-import { selectDialog } from "../../state management/slices/selectDialog";
-import { getMessage } from "../../state management/slices/dialogMessage";
+import store from "../../state_management/store";
+import { openCloseDialog } from "../../state_management/slices/openCloseDialog";
+import { selectDialog } from "../../state_management/slices/selectDialog";
+import { getMessage } from "../../state_management/slices/dialogMessage";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../../../firebase.config";

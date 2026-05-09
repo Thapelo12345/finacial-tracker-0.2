@@ -5,11 +5,11 @@ import {
   updateDoc,
   arrayRemove,
 } from "firebase/firestore";
-import store from "@/app/state management/store";
-import { selectDialog } from "@/app/state management/slices/selectDialog";
-import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
-import { getMessage } from "@/app/state management/slices/dialogMessage";
-import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
+import store from "@/app/state_management/store";
+import { selectDialog } from "@/app/state_management/slices/selectDialog";
+import { openCloseDialog } from "@/app/state_management/slices/openCloseDialog";
+import { getMessage } from "@/app/state_management/slices/dialogMessage";
+import { appUpdated } from "@/app/state_management/slices/UpdateAllComponents";
 
 type TransactObj = {
   transactionId: number;

@@ -9,9 +9,9 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import Bill from "@/app/interFaces/billInterface";
-import store from "@/app/state management/store";
-import { setAppLoadingStatus } from "@/app/state management/slices/loadStatus";
-import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
+import store from "@/app/state_management/store";
+import { setAppLoadingStatus } from "@/app/state_management/slices/loadStatus";
+import { appUpdated } from "@/app/state_management/slices/UpdateAllComponents";
 
 export async function updateBillValues(
   bill_id: number,
@@ -62,7 +62,7 @@ export async function updateBillValues(
 
     switch (bill_part) {
       case "autopay":
-        bill_to_be_updated.AutPay = billNewValue;
+        bill_to_be_updated.AutoPay = billNewValue;
         break;
 
       case "lastpayment":

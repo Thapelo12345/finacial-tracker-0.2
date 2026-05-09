@@ -4,10 +4,10 @@ import TransactionTable from "@/app/components/transaction/transactionTable";
 import BalanceContainer from "@/app/components/ui/balanceContainer";
 import AddItemBtn from "@/app/components/ui/buttons/addItemBtn";
 import { useDispatch } from "react-redux";
-import { onOffSubmit } from "@/app/state management/slices/openSubmition";
-import { settingSelected } from "@/app/state management/slices/selectSubmit";
+import { onOffSubmit } from "@/app/state_management/slices/openSubmition";
+import { settingSelected } from "@/app/state_management/slices/selectSubmit";
 import { useSelector } from "react-redux";
-import type { RootState } from "@/app/state management/store";
+import type { RootState } from "@/app/state_management/store";
 import { useState, useEffect } from "react";
 
 export default function Transactions() {

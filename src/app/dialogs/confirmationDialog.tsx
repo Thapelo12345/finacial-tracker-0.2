@@ -2,7 +2,7 @@
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import type { RootState } from "../state management/store";
+import type { RootState } from "../state_management/store";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 

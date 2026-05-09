@@ -1,9 +1,9 @@
 import { ExclamationTriangleIcon } from "@heroicons/react/20/solid";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import type { RootState } from "../state management/store";
+import type { RootState } from "../state_management/store";
 import { useDispatch } from "react-redux";
-import { openCloseDialog } from "../state management/slices/openCloseDialog";
+import { openCloseDialog } from "../state_management/slices/openCloseDialog";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 

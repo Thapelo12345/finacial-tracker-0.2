@@ -3,7 +3,7 @@ import MiniDetailsBtn from "./miniDetailsBtn";
 import MiniPiechart from "./miniPieChart";
 import MiniDetails from "./miniDetails";
 import { useSelector } from "react-redux";
-import type { RootState } from "../../state management/store";
+import type { RootState } from "@/app/state_management/store";
 import { useState, useEffect } from "react";
 
 type Prop = {

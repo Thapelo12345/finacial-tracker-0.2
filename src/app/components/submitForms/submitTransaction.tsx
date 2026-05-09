@@ -3,11 +3,11 @@ import LabelInputText from "@/app/components/ui/submitForms/labelInputText";
 import LabelInputNumber from "@/app/components/ui/submitForms/labelInputNumber";
 import DropDown from "@/app/components/ui/submitForms/dropDown";
 import { useDispatch } from "react-redux";
-import { onOffSubmit } from "../../state management/slices/openSubmition";
+import { onOffSubmit } from "../../state_management/slices/openSubmition";
 import { useState, useEffect  } from "react";
 import AddTransaction from "@/app/functions/transactionFunctions/AddTransaction";
 import { useSelector } from "react-redux";
-import type { RootState } from "../../state management/store";
+import type { RootState } from "../../state_management/store";
 
 type Categories = string[];
 
@@ -33,10 +33,8 @@ export default function TransactionSubmit() {
     (state: RootState) => state.updateApp.updateApp,
   );
 
-  // const name = useRef("");
   const [name, setName] = useState("")
   const [transactionType, setTransactionType] = useState("Income");
-  // const amount = useRef(0.0);
   const [amount, setAmount] = useState(0.0)
   const [description, setDescription] = useState("");
   const [selectedCategory, setCategory] = useState("Salary");

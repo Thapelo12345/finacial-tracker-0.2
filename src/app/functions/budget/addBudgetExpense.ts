@@ -1,10 +1,10 @@
 import { getDocs, arrayUnion, collection, updateDoc } from "firebase/firestore";
 import { db } from "../../../../firebase.config";
-import store from "../../state management/store";
-import { selectDialog } from "../../state management/slices/selectDialog";
-import { openCloseDialog } from "../../state management/slices/openCloseDialog";
-import { getMessage } from "../../state management/slices/dialogMessage";
-import { appUpdated } from "../../state management/slices/UpdateAllComponents";
+import store from "../../state_management/store";
+import { selectDialog } from "../../state_management/slices/selectDialog";
+import { openCloseDialog } from "../../state_management/slices/openCloseDialog";
+import { getMessage } from "../../state_management/slices/dialogMessage";
+import { appUpdated } from "../../state_management/slices/UpdateAllComponents";
 
 interface budgetExpense {
   budgetExpenseId: number;

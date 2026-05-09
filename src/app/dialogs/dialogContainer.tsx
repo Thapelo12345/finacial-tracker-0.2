@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import type { RootState } from "../state management/store";
+import type { RootState } from "../state_management/store";
 import Loanding from "./loadingDialog";
 import ConfirmDialog from "./confirmationDialog";
 import WarningDialog from "./warningDialog";

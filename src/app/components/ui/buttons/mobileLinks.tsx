@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { SettingsContext } from "@/app/context/settingsContext";
 import type { ReactElement } from "react";
 import { useSelector } from "react-redux";
-import type { RootState } from "@/app/state management/store";
+import type { RootState } from "@/app/state_management/store";
 
 type Props = {
   pageUrl: string;

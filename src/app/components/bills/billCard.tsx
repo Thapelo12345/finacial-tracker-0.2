@@ -18,14 +18,14 @@ import {
   checkingArrears,
 } from "@/app/functions/bills/billDates";
 import { useDispatch, useSelector } from "react-redux";
-import { onOffSubmit } from "@/app/state management/slices/openSubmition";
-import { setBillSlice } from "@/app/state management/slices/bill";
-import { settingSelected } from "@/app/state management/slices/selectSubmit";
+import { onOffSubmit } from "@/app/state_management/slices/openSubmition";
+import { setBillSlice } from "@/app/state_management/slices/bill";
+import { settingSelected } from "@/app/state_management/slices/selectSubmit";
 import { UpdateBill } from "@/app/functions/bills/updateBill";
 import { updateBillValues } from "@/app/functions/bills/UpdateBillValues";
-import { getFormType } from "@/app/state management/slices/billType";
-import { setAppLoadingStatus } from "@/app/state management/slices/loadStatus";
-import type { RootState } from "@/app/state management/store";
+import { getFormType } from "@/app/state_management/slices/billType";
+import { setAppLoadingStatus } from "@/app/state_management/slices/loadStatus";
+import type { RootState } from "@/app/state_management/store";
 import ArrearsComponent from "./arrearsComponent";
 
 type PROPS = Bill & { billNotification: (value: boolean) => void };

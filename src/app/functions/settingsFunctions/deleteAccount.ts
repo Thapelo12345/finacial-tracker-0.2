@@ -12,10 +12,10 @@ import {
   reauthenticateWithCredential,
   EmailAuthProvider,
 } from "@firebase/auth";
-import store from "@/app/state management/store";
-import { getMessage } from "@/app/state management/slices/dialogMessage";
-import { selectDialog } from "@/app/state management/slices/selectDialog";
-import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
+import store from "@/app/state_management/store";
+import { getMessage } from "@/app/state_management/slices/dialogMessage";
+import { selectDialog } from "@/app/state_management/slices/selectDialog";
+import { openCloseDialog } from "@/app/state_management/slices/openCloseDialog";
 import type { User } from "@firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
 

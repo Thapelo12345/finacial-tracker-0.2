@@ -2,10 +2,10 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth, db } from "../../../../firebase.config";
 import { addDoc } from "firebase/firestore";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import store from "../../state management/store";
-import { selectDialog } from "../../state management/slices/selectDialog";
-import { getMessage } from "../../state management/slices/dialogMessage";
-import { openCloseDialog } from "../../state management/slices/openCloseDialog";
+import store from "../../state_management/store";
+import { selectDialog } from "../../state_management/slices/selectDialog";
+import { getMessage } from "../../state_management/slices/dialogMessage";
+import { openCloseDialog } from "../../state_management/slices/openCloseDialog";
 
 const googleProvider = new GoogleAuthProvider();
 

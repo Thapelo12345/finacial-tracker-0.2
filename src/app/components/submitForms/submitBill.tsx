@@ -6,9 +6,8 @@ import LabelInputText from "@/app/components/ui/submitForms/labelInputText";
 import { AddBill } from "@/app/functions/bills/addBill";
 import Bill from "@/app/interFaces/billInterface";
 import { useDispatch } from "react-redux";
-// import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
-import { setBillLoader } from "@/app/state management/slices/billLoader";
-import { onOffSubmit } from "../../state management/slices/openSubmition";
+import { setBillLoader } from "@/app/state_management/slices/billLoader";
+import { onOffSubmit } from "../../state_management/slices/openSubmition";
 import { useState, useEffect } from "react";
 import { UpdateBill } from "@/app/functions/bills/updateBill";
 
