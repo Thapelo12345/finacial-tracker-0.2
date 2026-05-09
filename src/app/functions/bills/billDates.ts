@@ -31,7 +31,7 @@ function validatePaymentIntervalStrict(
   return "custom";
 }
 
-function getNextPaymentDate(
+function getNextDueDate(
   startDate: string,
   dueDate: string,
   frequency: string,
@@ -186,24 +186,22 @@ function checkingArrears(
   const due = new Date(dueDate);
 
   while (startingDate < due) {
-    const cloneDate = new Date(nextPaymentDate(startingDate, dueDate, continously));
+    startingDate = new Date(nextPaymentDate(startingDate, dueDate, continously));
 
-    if (cloneDate < due) {
+    if(startingDate.getTime() == due.getTime()) break
+    
       arrearsCount++;
       arrearsAmount += amount;
-    } //end if
 
-    startingDate = cloneDate;
   } //end of while loop
 
   return { arrearsCount, arrearsAmount };
 } //end of checking arrears function
 
 
-
 export {
   validatePaymentIntervalStrict,
-  getNextPaymentDate,
+  getNextDueDate,
   nextPaymentDate,
   checkingArrears,
   DaysLeft,

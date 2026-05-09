@@ -13,7 +13,7 @@ import BillTables from "./billTables";
 import { BillContext, LoadContext } from "@/app/context/billContext";
 import BillLoader from "./billCardLoad";
 import {
-  getNextPaymentDate,
+  getNextDueDate,
   nextPaymentDate,
   checkingArrears,
 } from "@/app/functions/bills/billDates";
@@ -45,23 +45,18 @@ export default function BillCard({
   AutoPay,
   billNotification,
 }: PROPS) {
-  const currentTextColor = (value: string): string => {
+  function currentTextColor(value: string): string {
     switch (value) {
       case "active":
         return "lime";
-        break;
-
       case "pause":
         return "orange";
-        break;
-
       case "inactive":
         return "grey";
-        break;
       default:
         return "white";
     }
-  };
+  }
 
   function selectThemeColor(statusValue: string) {
     if (statusValue == "active") return "oklch(80.9% 0.105 251.813)";
@@ -94,8 +89,7 @@ export default function BillCard({
     arrearsCount: number;
     arrearsAmount: number;
   }>(checkingArrears(amount, startDate, lastpaymentDate, dueDate, frenquently));
-  // strat date - due date - frenqulty
-  const nextDueDate = getNextPaymentDate(startDate, dueDate, frenquently);
+  const nextDueDate = getNextDueDate(startDate, dueDate, frenquently);
 
   function currentBill(): Bill | null {
     const data = sessionStorage.getItem("currentUser");
@@ -189,7 +183,6 @@ export default function BillCard({
     if (currentBillId == id) setLoad(billLoading);
   }, [billLoading]);
 
-/*
   useGSAP(() => {
     gsap.fromTo(
       ".bill-card",
@@ -207,7 +200,7 @@ export default function BillCard({
       },
     );
   });
-*/
+
   return (
     <LoadContext.Provider value={{ load: setLoad }}>
       <BillContext.Provider
@@ -257,7 +250,7 @@ export default function BillCard({
             />
 
             <AutoPayComponent
-            status={status}
+              status={status}
               autoPay={autopay}
               bill_id={id}
               setAutopay={setAutoPay}
@@ -377,25 +370,34 @@ export default function BillCard({
               style={{ background: statusColor }}
               onClick={async () => {
 
-                if(arrears.arrearsCount == 0) return
-                
-                const startHere = new Date((lastpaymentDate != "No payment" && lastpaymentDate != undefined) ? lastpaymentDate : startDate)
-                const newPayment = nextPaymentDate(startHere, dueDate, frenquently)
+                if (arrears.arrearsCount == 0) return;
 
-                if(new Date(newPayment) < new Date(dueDate)){
+                const startHere = new Date(
+                  (lastpaymentDate != "No payment" &&
+                    lastpaymentDate != undefined)
+                    ? lastpaymentDate
+                    : startDate,
+                );
+                const newPayment = nextPaymentDate(
+                  startHere,
+                  dueDate,
+                  frenquently,
+                );
 
-                setLoad(true)
-                const updateResult = await updateBillValues(id, "lastpayment", newPayment, setLoad)
-                if(updateResult == "Failed to update"){
-                  alert("failed to update!.")
-                  return
-                }
-                setLastPaymentDate(newPayment)
-                
-              }
-            else console.log(`This is the new payment date: ${newPayment}\nThis is the due date: ${dueDate}`)
-
-                
+                if (new Date(newPayment) < new Date(dueDate)) {
+                  setLoad(true);
+                  const updateResult = await updateBillValues(
+                    id,
+                    "lastpayment",
+                    newPayment,
+                    setLoad,
+                  );
+                  if (updateResult == "Failed to update") {
+                    alert("failed to update!.");
+                    return;
+                  }
+                  setLastPaymentDate(newPayment);
+                } 
               }}
             >
               Accout payed
@@ -407,9 +409,8 @@ export default function BillCard({
               className=" cursor-pointer"
               onClick={async () => {
                 try {
-
                   await DeleteBill(id);
-                  
+
                   const delay = setTimeout(() => {
                     billChangedTo.current = !billChangedTo.current;
                     billNotification(billChangedTo.current);

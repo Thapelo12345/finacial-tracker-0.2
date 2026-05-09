@@ -21,6 +21,7 @@ const [paymentsToBeMade, setPaymentsToBeMade] = useState(0)
 useEffect(()=>{
 
 let amountTopay = 0.0, amountpayed = 0.0, paymentMade = 0, paymentToBeMade = 0
+
 const currentDate = new Date()
 const start = new Date(startdate)
 const end = new Date(endDate)

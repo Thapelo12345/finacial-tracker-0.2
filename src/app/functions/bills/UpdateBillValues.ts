@@ -54,6 +54,8 @@ export async function updateBillValues(
     }, 1000);
   };
   try {
+    
+    if(!navigator.onLine) throw new Error("No internet connection!.")
     let onlineData = await firebaseUser();
 
     switch (bill_part) {
@@ -79,6 +81,8 @@ export async function updateBillValues(
     if (!onlineData.data()) throw new Error("No data FOUND!");
 
     do {
+      if(!navigator.onLine) throw new Error("No internet connection!.")
+
       await updateDoc(onlineData.ref, {
         recurringBills: arrayRemove(
           onlineData
@@ -96,6 +100,7 @@ export async function updateBillValues(
         .recurringBills.find((bill: Bill) => bill.id == bill_id) != undefined
     );
 
+    if(!navigator.onLine) throw new Error("No internet connection!.")
     await updateDoc(onlineData.ref, {
       recurringBills: arrayUnion(bill_to_be_updated),
     });

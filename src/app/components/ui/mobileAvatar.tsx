@@ -54,7 +54,6 @@ export default function MobileAvatar({ name, avatar }: Props) {
       style={{
         backgroundColor:
           colors[alphabet.indexOf(name[0].toUpperCase()) % colors.length],
-        boxShadow: "-1px -5px 5px black, 1px 5px 5px black",
       }}
     >
       {avatar === "" && (
