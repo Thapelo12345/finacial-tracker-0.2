@@ -10,8 +10,8 @@ import { selectDialog } from "@/app/state management/slices/selectDialog";
 import { getMessage } from "@/app/state management/slices/dialogMessage";
 import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
 import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
+import { setAppLoadingStatus } from "@/app/state management/slices/loadStatus";
 import Bill from "@/app/interFaces/billInterface";
-
 
 export default async function DeleteBill(billId: number) {
   const data = sessionStorage.getItem("currentUser");
@@ -48,17 +48,18 @@ export default async function DeleteBill(billId: number) {
 
       store.dispatch(getMessage("Bill deleted successfully"));
       store.dispatch(selectDialog("confirm"));
+      if (store.getState().appLoadStatus.appLoadingStatus) store.dispatch(setAppLoadingStatus());
 
       const delay = setTimeout(() => {
         store.dispatch(openCloseDialog());
-        // store.dispatch(appUpdated())
+        store.dispatch(appUpdated())
         clearTimeout(delay)
       }, 1500);
     
     } catch (error: Error | unknown) {
       const errorMessage =
         error instanceof Error ? error.message : "unknown error occured";
-
+      if (store.getState().appLoadStatus.appLoadingStatus) store.dispatch(setAppLoadingStatus());
       store.dispatch(getMessage(errorMessage));
       store.dispatch(selectDialog("error"));
     } //end of catch

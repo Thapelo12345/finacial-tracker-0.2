@@ -2,8 +2,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cloneElement, isValidElement } from "react";
-import { useEffect } from "react";
 import type { ReactElement } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/app/state management/store";
 
 type Props = {
   pageUrl: string;
@@ -13,6 +14,9 @@ type Props = {
 };
 
 export default function LinkBtns({ pageUrl, linkText, btnUrl, icon }: Props) {
+
+  const appLoading = useSelector((state: RootState)=> state.appLoadStatus.appLoadingStatus)
+  
   const location = usePathname();
   const currentLocation: string = location;
 
@@ -26,10 +30,9 @@ export default function LinkBtns({ pageUrl, linkText, btnUrl, icon }: Props) {
 
   return (
     <Link
-      className={
-        currentLocation === btnUrl
-          ? "flex flex-row p-2 bg-white text-xs w-fit pr-4 text-black font-bold m-2 rounded-tr-lg rounded-br-lg"
-          : "flex flex-row p-2 text-xs text-white font-bold m-2 rounded-tr-lg rounded-br-lg"
+      className={`
+        ${appLoading ? "pointer-events-none" : "pointer-events-auto"}
+        ${currentLocation === btnUrl ? "bg-white w-fit pr-4 text-black" : "text-white"} flex flex-row p-2 text-xs rounded-br-lg rounded-tr-lg font-bold m-2`
       }
       href={pageUrl}
     >

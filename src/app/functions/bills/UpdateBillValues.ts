@@ -10,6 +10,7 @@ import {
 } from "firebase/firestore";
 import Bill from "@/app/interFaces/billInterface";
 import store from "@/app/state management/store";
+import { setAppLoadingStatus } from "@/app/state management/slices/loadStatus";
 import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
 
 export async function updateBillValues(
@@ -48,30 +49,28 @@ export async function updateBillValues(
   const closeLoading = () => {
     const delay = setTimeout(() => {
       cloudLoad(false);
+      if (store.getState().appLoadStatus.appLoadingStatus)
+        store.dispatch(setAppLoadingStatus());
       store.dispatch(appUpdated());
 
       clearTimeout(delay);
     }, 1000);
   };
   try {
-    
-    if(!navigator.onLine) throw new Error("No internet connection!.")
+    if (!navigator.onLine) throw new Error("No internet connection!.");
     let onlineData = await firebaseUser();
 
     switch (bill_part) {
       case "autopay":
         bill_to_be_updated.AutPay = billNewValue;
-        // return { ...bill, AutoPay: billNewValue };
         break;
 
       case "lastpayment":
         bill_to_be_updated.lastPayment = billNewValue;
-        // return { ...bill, lastPayment: billNewValue };
         break;
 
       case "status":
         bill_to_be_updated.status = billNewValue;
-        //  return { ...bill, status: billNewValue };
         break;
 
       default:
@@ -81,7 +80,7 @@ export async function updateBillValues(
     if (!onlineData.data()) throw new Error("No data FOUND!");
 
     do {
-      if(!navigator.onLine) throw new Error("No internet connection!.")
+      if (!navigator.onLine) throw new Error("No internet connection!.");
 
       await updateDoc(onlineData.ref, {
         recurringBills: arrayRemove(
@@ -92,15 +91,14 @@ export async function updateBillValues(
       });
       onlineData = await firebaseUser();
 
-      if(!onlineData.data()) throw new Error("No Data FOUND!")
-      
+      if (!onlineData.data()) throw new Error("No Data FOUND!");
     } while (
       onlineData
         .data()
         .recurringBills.find((bill: Bill) => bill.id == bill_id) != undefined
     );
 
-    if(!navigator.onLine) throw new Error("No internet connection!.")
+    if (!navigator.onLine) throw new Error("No internet connection!.");
     await updateDoc(onlineData.ref, {
       recurringBills: arrayUnion(bill_to_be_updated),
     });

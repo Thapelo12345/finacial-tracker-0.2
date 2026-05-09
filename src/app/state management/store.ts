@@ -9,6 +9,7 @@ import updateAPpReducer from "./slices/UpdateAllComponents";
 import formTypeReducer from "./slices/billType";
 import billReducer from "./slices/bill"
 import billLoad from "./slices/billLoader"
+import appLoadStatusReducer from "./slices/loadStatus"
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     formtype: formTypeReducer,
     bill: billReducer,
     billLoader: billLoad,
+    appLoadStatus: appLoadStatusReducer,
   },
 });
 

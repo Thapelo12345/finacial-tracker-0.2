@@ -12,6 +12,7 @@ import { getMessage } from "@/app/state management/slices/dialogMessage";
 import { selectDialog } from "@/app/state management/slices/selectDialog";
 import { openCloseDialog } from "@/app/state management/slices/openCloseDialog";
 import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
+import { setAppLoadingStatus } from "@/app/state management/slices/loadStatus";
 
 export async function UpdateBill(
   bill: Bill,
@@ -47,20 +48,22 @@ export async function UpdateBill(
           currentUser.recurringBills[pos] = bill;
           sessionStorage.setItem("currentUser", JSON.stringify(currentUser),);
           closeLoad(false);
+          if (store.getState().appLoadStatus.appLoadingStatus) store.dispatch(setAppLoadingStatus());
 
           const delay = setTimeout(()=>{
             store.dispatch(appUpdated())
             clearTimeout(delay)
           }, 1500)
             
-      } catch (error) {
+      } catch (err : unknown) {
         //end of try
+        const errorMessage = err instanceof Error ? err.message : "unknown Firebase error!"
         alert("Failed to update bill");
-        store.dispatch(getMessage("Failed to update bill"));
+        store.dispatch(getMessage(errorMessage));
         store.dispatch(selectDialog("error"));
         store.dispatch(openCloseDialog());
-        console.log(error);
         closeLoad(false);
+        if (store.getState().appLoadStatus.appLoadingStatus) store.dispatch(setAppLoadingStatus());
       }
     } //end of crrbill if
 } //update function

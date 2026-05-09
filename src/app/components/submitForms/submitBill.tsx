@@ -6,7 +6,7 @@ import LabelInputText from "@/app/components/ui/submitForms/labelInputText";
 import { AddBill } from "@/app/functions/bills/addBill";
 import Bill from "@/app/interFaces/billInterface";
 import { useDispatch } from "react-redux";
-import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
+// import { appUpdated } from "@/app/state management/slices/UpdateAllComponents";
 import { setBillLoader } from "@/app/state management/slices/billLoader";
 import { onOffSubmit } from "../../state management/slices/openSubmition";
 import { useState, useEffect } from "react";
@@ -73,56 +73,49 @@ export default function SubmitBills({ bill, formType }: PROPS) {
           }
 
           // calling add bill function to add the bill to the database
-          try{
-          if (formType == "add") {
-            await AddBill(
-              name,
-              description,
-              amount,
-              startDate,
-              dueDate,
-              endDate,
-              category,
-              duration,
-              frenquently,
-              status,
-            );
-          } //end of if
-
-          else if (formType == "edit" && bill) {
-            setFormLoader(true);
-            const newBillUpdated: Bill = {
-              id: bill.id,
-              title: name == "" ? bill.title : name,
-              amount: amount == 0.0 ? bill.amount : amount,
-              description: description == "" ? bill.description : description,
-              startDate: startDate == "" ? bill.startDate : startDate,
-              dueDate: dueDate == "" ? bill.dueDate : dueDate,
-              endDate: endDate == "" ? bill.endDate : endDate,
-              lastPayment: bill.lastPayment,
-              category: category == "" ? bill.category : category,
-              duration: duration == "" ? bill.category : duration,
-              frenquently: frenquently == "" ? bill.frenquently : frenquently,
-              status: status == "" ? bill.status : status,
-              AutoPay: bill.AutoPay,
-            };
-            await UpdateBill(newBillUpdated, setFormLoader);
-
-         
-} //end of else if
-
-          
-}//end of try
-catch(err: Error | unknown){
-  const errorMessage = err instanceof Error ? err.message : "unknown firebase ERROR!..."
-  alert(errorMessage)
-}
-
+          try {
+            if (formType == "add") {
+              await AddBill(
+                name,
+                description,
+                amount,
+                startDate,
+                dueDate,
+                endDate,
+                category,
+                duration,
+                frenquently,
+                status,
+              );
+            } //end of if
+            else if (formType == "edit" && bill) {
+              setFormLoader(true);
+              const newBillUpdated: Bill = {
+                id: bill.id,
+                title: name == "" ? bill.title : name,
+                amount: amount == 0.0 ? bill.amount : amount,
+                description: description == "" ? bill.description : description,
+                startDate: startDate == "" ? bill.startDate : startDate,
+                dueDate: dueDate == "" ? bill.dueDate : dueDate,
+                endDate: endDate == "" ? bill.endDate : endDate,
+                lastPayment: bill.lastPayment,
+                category: category == "" ? bill.category : category,
+                duration: duration == "" ? bill.category : duration,
+                frenquently: frenquently == "" ? bill.frenquently : frenquently,
+                status: status == "" ? bill.status : status,
+                AutoPay: bill.AutoPay,
+              };
+              await UpdateBill(newBillUpdated, setFormLoader);
+            } //end of else if
+          } catch (err: Error | unknown) {
+            //end of try
+            const errorMessage =
+              err instanceof Error ? err.message : "unknown firebase ERROR!...";
+            alert(errorMessage);
+          }
         }}
       >
-        <h1 className="submitFormsHeaders">
-          Add Bill
-        </h1>
+        <h1 className="submitFormsHeaders">Add Bill</h1>
 
         <LabelInputText
           stateValue={name}
@@ -143,14 +136,14 @@ catch(err: Error | unknown){
           title="Installment amount"
           setValue={setAmount}
         />
-<div className="flex flex-col md:flex-row w-full">
-        <DateInput
-          title="Start Date"
-          state={startDate}
-          setValue={setStateDate}
-        />
-        <DateInput title="Due Date" state={dueDate} setValue={setDuedate} />
-</div>
+        <div className="flex flex-col md:flex-row w-full">
+          <DateInput
+            title="Start Date"
+            state={startDate}
+            setValue={setStateDate}
+          />
+          <DateInput title="Due Date" state={dueDate} setValue={setDuedate} />
+        </div>
         <div className="flex flex-col sm:flex-row flex-wrap items-center justify-evenly w-full">
           <DropDown
             title="Category"

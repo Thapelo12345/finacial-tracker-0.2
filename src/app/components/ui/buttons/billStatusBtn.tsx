@@ -2,12 +2,15 @@
 
 import { motion } from "framer-motion";
 import { useContext } from "react";
+import { useDispatch } from "react-redux";
 import { BillContext, LoadContext } from "@/app/context/billContext";
 import { updateBillValues } from "@/app/functions/bills/UpdateBillValues";
+import { setAppLoadingStatus } from "@/app/state management/slices/loadStatus";
 
 const statusArray: string[]= ["active", "pause", "inactive"];
 
 export default function BillStatusButton() {
+  const dispatch = useDispatch()
   const theme = useContext(BillContext);
   const load = useContext(LoadContext);
 
@@ -31,6 +34,8 @@ export default function BillStatusButton() {
         const newStatus = statusPosition + 1 < 3 ? statusArray[statusPosition + 1] : statusArray[0]
 
       load.load(true);
+      dispatch(setAppLoadingStatus())
+
       const uplaodResult = await updateBillValues(theme.cardId, "status", newStatus, load.load)
 
       if(uplaodResult == "Done Upadating?.") theme.setTheme(newStatus)

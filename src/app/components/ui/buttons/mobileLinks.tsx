@@ -5,6 +5,8 @@ import { cloneElement, isValidElement } from "react";
 import { useContext } from "react";
 import { SettingsContext } from "@/app/context/settingsContext";
 import type { ReactElement } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/app/state management/store";
 
 type Props = {
   pageUrl: string;
@@ -14,6 +16,7 @@ type Props = {
 };
 
 export default function MobileLinks({ pageUrl, toolTip, btnUrl, icon }: Props) {
+  const appLoading = useSelector((state: RootState)=> state.appLoadStatus)
   const settings = useContext(SettingsContext);
   const location = usePathname();
 
@@ -29,7 +32,9 @@ export default function MobileLinks({ pageUrl, toolTip, btnUrl, icon }: Props) {
     <Link
       href={pageUrl}
       style={{ pointerEvents: settings.currentValue ? "none" : "auto" }}
-      className={`flex flex-row p-1 md:p-2 text-xs m-1 md:m-2 ${
+      className={`flex flex-row p-1 md:p-2 text-xs m-1 md:m-2
+        ${appLoading ? "pointer-events-auto" : "pointer-events-none"}
+        ${
         location === btnUrl
           ? "inline-block border-b-2 border-green-500 text-green-400 bg-white rounded-tr-lg rounded-tl-lg"
           : "text-white"

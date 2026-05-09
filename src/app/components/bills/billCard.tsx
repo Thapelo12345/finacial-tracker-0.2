@@ -24,6 +24,7 @@ import { settingSelected } from "@/app/state management/slices/selectSubmit";
 import { UpdateBill } from "@/app/functions/bills/updateBill";
 import { updateBillValues } from "@/app/functions/bills/UpdateBillValues";
 import { getFormType } from "@/app/state management/slices/billType";
+import { setAppLoadingStatus } from "@/app/state management/slices/loadStatus";
 import type { RootState } from "@/app/state management/store";
 import ArrearsComponent from "./arrearsComponent";
 
@@ -179,9 +180,7 @@ export default function BillCard({
     }
   }, [status, arrears, load]);
 
-  useEffect(() => {
-    if (currentBillId == id) setLoad(billLoading);
-  }, [billLoading]);
+  useEffect(() => {if (currentBillId == id) setLoad(billLoading);}, [billLoading]);
 
   useGSAP(() => {
     gsap.fromTo(
@@ -269,9 +268,7 @@ export default function BillCard({
             )}
 
             <div
-              className={`${
-                status === "inactive" ? "hidden" : "block"
-              } flex flex-row items-start justify-evenly m-3`}
+              className={`${status === "inactive" ? "hidden" : "block"} flex flex-row items-start justify-evenly m-3`}
             >
               <label
                 className=" text-xs font-bold p-2 w-fit h-fit rounded-sm"
@@ -349,6 +346,8 @@ export default function BillCard({
 
                 try {
                   setLoad(true);
+                  dispatch(setAppLoadingStatus())
+
                   await UpdateBill(currentBill, setLoad);
                   setLastPaymentDate(formatedDate);
                   setArrears({ arrearsCount: 0, arrearsAmount: 0.0 });
@@ -358,8 +357,10 @@ export default function BillCard({
                       ? err.message
                       : "unknown firebase ERROR!...";
                   setLoad(false);
+                  dispatch(setAppLoadingStatus())
                   alert(errorMessage);
                 }
+                
               }}
             >
               Clear Arrears
@@ -386,6 +387,7 @@ export default function BillCard({
 
                 if (new Date(newPayment) < new Date(dueDate)) {
                   setLoad(true);
+                  dispatch(setAppLoadingStatus())
                   const updateResult = await updateBillValues(
                     id,
                     "lastpayment",

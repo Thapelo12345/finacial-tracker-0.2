@@ -1,4 +1,4 @@
-import { GetDate } from "../bills/getcurrentDate";
+import { GetDate } from "../bills/billDates";
 import { updateDoc, arrayUnion, getDocs, collection } from "firebase/firestore";
 import { db } from "../../../../firebase.config";
 import { openCloseDialog } from "../../state management/slices/openCloseDialog";
