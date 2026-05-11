@@ -18,7 +18,7 @@ import MobileSettings from "./mobileSettings";
 import { SignOut } from "@/app/functions/authFunctions/signOut";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-import type { RootState } from "@/app/state management/store";
+import type { RootState } from "@/app/state_management/store";
 
 export default function MobileDash() {
   const navigate = useRouter()
