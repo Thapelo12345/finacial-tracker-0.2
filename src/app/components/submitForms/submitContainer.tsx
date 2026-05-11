@@ -4,7 +4,7 @@ import SubmitBills from "./submitBill";
 import SubmitBudget from "./submitBudget";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import type { RootState } from "../../state management/store";
+import type { RootState } from "../../state_management/store";
 
 export default function SubmitContainer() {
   const formType = useSelector((state: RootState)=> state.formtype.formType)
