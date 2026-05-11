@@ -9,7 +9,7 @@
     }
 
     .bill-card {
-        @apply relative flex flex-col mb-2 md:m-2 w-full h-130 sm:max-w-100 p-1 rounded-md ;
+        @apply relative flex flex-col mb-2 md:m-2 w-full h-130 sm:max-w-100 p-1 rounded-md;
     }
 
     .bill-main{

@@ -5,7 +5,7 @@ import MiniDetailsBtn from "./miniDetailsBtn";
 import MiniBillsCell from "./miniBillsCell";
 import { useState, useEffect } from "react";
 import { getNextDueDate } from "@/app/functions/bills/billDates";
-import { DaysLeft } from "@/app/functions/bills/billDates";
+// import { DaysLeft } from "@/app/functions/bills/billDates";
 import type { RootState } from "@/app/state_management/store";
 import Bill from "@/app/interFaces/billInterface";
 
@@ -24,50 +24,50 @@ export default function MiniBills({ animate }: Prop) {
   useEffect(() => {
     const data = sessionStorage.getItem("currentUser");
 
-    if (data) {
-      const user = JSON.parse(data);
+    if (!data) return;
+    const user = JSON.parse(data);
 
-      if (user.recurringBills.length !== 0) {
-        user.recurringBills.forEach((bill: Bill) => {
-          const countDays = DaysLeft(
-            getNextDueDate(bill.startDate, bill.dueDate, bill.frenquently),
-          );
+    if (user.recurringBills.length !== 0) {
+      user.recurringBills.forEach((bill: Bill) => {
+        const due = new Date(bill.dueDate);
+        const currentDate = new Date();
+        const minutesDifference = due.getTime() - currentDate.getTime();
+        const countDays = Math.floor(minutesDifference / (1000 * 60 * 60 * 24));
 
-          const counter = (): number => {
-            switch (bill.frenquently) {
-              case "weekly":
-                return 4;
-                break;
+        const counter = (): number => {
+          switch (bill.frenquently) {
+            case "weekly":
+              return 4;
+              break;
 
-              case "monthly":
-                return 10;
-                break;
+            case "monthly":
+              return 10;
+              break;
 
-              case "yearlty":
-                return 20;
-                break;
+            case "yearlty":
+              return 20;
+              break;
 
-              default:
-                return 0;
-                break;
-            }
-          };
-
-          if (countDays <= counter() && countDays > counter() * 0.5) {
-            setUpcoming(upcoming + bill.amount);
-          } else if (countDays <= counter() * 0.5 && counter() > 0) {
-            setDueBills(dueBills + bill.amount);
-          } else {
-            setPaidBills(paidBills + bill.amount);
+            default:
+              return 0;
+              break;
           }
-        });
-      } //end of if array length
-      else {
-        setPaidBills(0);
-        setDueBills(0);
-        setUpcoming(0);
-      } //end of else array length
-    }
+        };
+
+        if (countDays <= counter() && countDays > counter() * 0.5) {
+          setUpcoming(upcoming + bill.amount);
+        } else if (countDays <= counter() * 0.5 && counter() > 0) {
+          setDueBills(dueBills + bill.amount);
+        } else {
+          setPaidBills(paidBills + bill.amount);
+        }
+      });
+    } //end of if array length
+    else {
+      setPaidBills(0);
+      setDueBills(0);
+      setUpcoming(0);
+    } //end of else array length
   }, [checkUpdate]);
 
   return (

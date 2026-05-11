@@ -73,7 +73,7 @@ export default function Bills() {
   }, [checkUpdate]);
 
   return (
-    <main className="md:m-2 md:p-4 pb-15 md:pb-4 w-screen h-screen overflow-y-auto">
+    <main className="md:m-2 md:p-4 pb-15 md:pb-4 w-screen h-screen overflow-x-hidden overflow-y-auto">
       <PageHeader title="Recurring Bills" />
       <div className="flex flex-row flex-wrap justify-start">
         <BalanceContainer

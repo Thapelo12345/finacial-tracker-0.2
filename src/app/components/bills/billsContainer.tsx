@@ -1,7 +1,7 @@
 "use client";
 import BillCard from "./billCard";
 import { useSelector } from "react-redux";
-import type { RootState } from "../../state management/store";
+import type { RootState } from "../../state_management/store";
 import Bill from "@/app/interFaces/billInterface";
 import { nextPaymentDate } from "@/app/functions/bills/billDates";
 import { useState, useEffect, useRef } from "react";
@@ -67,11 +67,12 @@ export default function BillsContainer({setPaid, setDue, setUpcoming}:PROPS) {
       }//end of if
 
       else if(bill.lastPayment !== "No payment" && bill.lastPayment != undefined){
-        
+        const currentDate = new Date()
         let nextpayment = new Date(nextPaymentDate(new Date(bill.lastPayment), bill.dueDate, bill.frenquently))
 
-        if(nextpayment < new Date() && !bill.AutoPay){
-          while(nextpayment < new Date()){
+        if(nextpayment < currentDate){
+          while(nextpayment < currentDate){
+
             dueBills += bill.amount
             nextpayment = new Date(nextPaymentDate(nextpayment, bill.dueDate, bill.frenquently))
           }//end of while loop
@@ -110,7 +111,7 @@ export default function BillsContainer({setPaid, setDue, setUpcoming}:PROPS) {
   }, [checkUpdate, changedBills]);
 
   return (
-    <div className="flex flex-row justify-evenly flex-wrap md:justify-start m-1 w-full md:w-[90%] h-[80%]">
+    <div className="flex flex-row items-start gap-1 flex-wrap md:justify-start m-1 w-full md:w-[90%] h-[80%] overflow-x-hidden">
       {bills.map((bill) => (
         <BillCard
           key={bill.id}

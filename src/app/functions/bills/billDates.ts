@@ -122,61 +122,25 @@ function getNextDueDate(
   return `${year}-${month}-${day}`;
 }
 
-function nextPaymentDate(start: Date, due: string, frequently: string) {
-  const dueDate = new Date(due);
-  const newDate = start;
-  const targetDate = dueDate.getDate();
-  let formatedTime = "";
+function nextPaymentDate(start: Date, duePayment: string, frequently: string) {
+  const due = new Date(duePayment)
+  const cloneStart = start
 
-  if (frequently == "monthly") {
-    if (
-      start.getDate() == targetDate ||
-      !(
-        start.getDate() < targetDate &&
-        new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate() >=
-          targetDate
-      )
-    ) {
-      newDate.setDate(1);
-      newDate.setMonth(start.getMonth() + 1);
+  if(frequently == "yearly"){
+      cloneStart.setFullYear(cloneStart.getFullYear() + 1)
+  }//end of if
 
-      const lastDate = new Date(
-        newDate.getFullYear(),
-        newDate.getMonth() + 1,
-        0,
-      ).getDate();
-      if (lastDate >= targetDate) {
-        formatedTime = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, "0")}-${String(targetDate).padStart(2, "0")}`;
-      } else
-        formatedTime = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, "0")}-${String(lastDate).padStart(2, "0")}`;
-    } else {
-      formatedTime = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, "0")}-${String(targetDate).padStart(2, "0")}`;
-    }
-  } //end of monthly frequently
-  else {
-    if (frequently === "weekly") newDate.setDate(start.getDate() + 7);
-    else newDate.setFullYear(start.getFullYear() + 1);
+  else if(frequently == "monthly"){
+    cloneStart.setDate(1)
+    cloneStart.setMonth(cloneStart.getMonth() + 1)
+    const lastDay = new Date( cloneStart.getFullYear(), cloneStart.getMonth() + 1, 0);
+    cloneStart.setDate(lastDay.getDate() < due.getDate() ? lastDay.getDate() : due.getDate())
+  }//end of else if
 
-    formatedTime = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, "0")}-${String(newDate.getDate()).padStart(2, "0")}`;
-  } //end of weekly else if
+  else{ cloneStart.setDate(cloneStart.getDate() + 7)}
 
-  return new Date(formatedTime) == dueDate ? "wait for Due Date" : formatedTime;
+ return cloneStart.toISOString().split("T")[0]
 } //end next payment date
-
-function DaysLeft(dueDate: string): number {
-  const due = new Date(dueDate);
-  const now = new Date();
-
-  due.setHours(0, 0, 0, 0);
-  now.setHours(0, 0, 0, 0);
-
-  const timeDiff = due.getTime() - now.getTime();
-
-  // Convert milliseconds to days
-  const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-  return daysDiff < 0 ? 0 : daysDiff;
-}
 
 function checkingArrears(
   amount: number,
@@ -188,16 +152,15 @@ function checkingArrears(
   let arrearsCount = 0,
     arrearsAmount = 0;
 
-  let startingDate =
-    lastpayment === "No payment" ? new Date(startdate) : new Date(lastpayment);
+  let startingDate = new Date(lastpayment === "No payment" ? startdate : lastpayment)
+  const currentDate = new Date()
   const due = new Date(dueDate);
 
-  while (startingDate < due) {
-    startingDate = new Date(
-      nextPaymentDate(startingDate, dueDate, continously),
-    );
+  while (startingDate < due && startingDate < currentDate) {
 
-    if (startingDate.getTime() == due.getTime()) break;
+    startingDate = new Date(nextPaymentDate(startingDate, dueDate, continously));
+
+    if (startingDate.toISOString().split("T")[0] == due.toISOString().split("T")[0]) break
 
     arrearsCount++;
     arrearsAmount += amount;
@@ -212,5 +175,4 @@ export {
   getNextDueDate,
   nextPaymentDate,
   checkingArrears,
-  DaysLeft,
 };

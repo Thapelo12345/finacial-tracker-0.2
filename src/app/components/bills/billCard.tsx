@@ -292,75 +292,37 @@ export default function BillCard({
               style={{ background: statusColor }}
               onClick={async () => {
                 if (arrears.arrearsCount == 0) return;
-                const paymentBeforeDueDate = new Date(dueDate);
 
-                switch (frenquently) {
-                  case "yearly":
-                    paymentBeforeDueDate.setFullYear(
-                      paymentBeforeDueDate.getFullYear() - 1,
-                    );
-                    break;
+                const due = new Date(dueDate)
+                const currentDate = new Date()
+                const cloneDate = due
 
-                  case "nonthly":
-                    paymentBeforeDueDate.setDate(1);
-                    paymentBeforeDueDate.setMonth(
-                      paymentBeforeDueDate.getMonth() - 1,
-                    );
-                    break;
+                   if(frenquently == "yearly") {
+                    if(currentDate.getFullYear() == due.getFullYear()) cloneDate.setFullYear(cloneDate.getFullYear() - 1)
+                    }
+                  
+                  else if(frenquently =="monthly"){
+                    cloneDate.setDate(1)
+                    cloneDate.setMonth(cloneDate.getMonth() - 1)
+                    const lastDay = new Date(cloneDate.getFullYear(),cloneDate.getMonth() + 1,0);
+                    cloneDate.setDate(lastDay.getDate() < due.getDate() ? lastDay.getDate() : due.getDate())
+                  }
 
-                  case "weekly":
-                    paymentBeforeDueDate.setDate(
-                      paymentBeforeDueDate.getDate() - 7,
-                    );
-                    break;
+                  else {
+                   const tempDate = cloneDate
+                   tempDate.setDate(tempDate.getDate() - 7)
 
-                  default:
-                    break;
-                }
+                   if(tempDate < new Date(startDate)) cloneDate.setDate(cloneDate.getDate() - 7)
+                  }
 
-                let setDayDate = paymentBeforeDueDate.getDate();
+                  if(cloneDate == due) return
+                  setLoad(true)
 
-                if (frenquently == "monthly") {
-                  // getting last daye date
-                  const lastDate = new Date(
-                    paymentBeforeDueDate.getFullYear(),
-                    paymentBeforeDueDate.getMonth() + 1,
-                    0,
-                  ).getDate();
-                  const targetDueDate = new Date(dueDate).getDate();
+                  const updateResults = await updateBillValues(id, "lastpayment",cloneDate.toISOString().split("T")[0], setLoad)
 
-                  if (lastDate < targetDueDate) setDayDate = lastDate;
-                }
+                  if(updateResults == "Done Upadating?.")setLastPaymentDate(cloneDate.toISOString().split("T")[0])
 
-                const data = sessionStorage.getItem("currentUser");
-                if (!data) {
-                  alert("No use data FOUND!");
-                  return;
-                }
-
-                const formatedDate = `${paymentBeforeDueDate.getFullYear()}-${String(paymentBeforeDueDate.getMonth()).padStart(2, "0")}-${String(setDayDate).padStart(2, "0")}`;
-                const currentBill = JSON.parse(data).recurringBills.find(
-                  (bill: Bill) => bill.id === id,
-                );
-                currentBill.lastPayment = formatedDate;
-
-                try {
-                  setLoad(true);
-                  dispatch(setAppLoadingStatus())
-
-                  await UpdateBill(currentBill, setLoad);
-                  setLastPaymentDate(formatedDate);
-                  setArrears({ arrearsCount: 0, arrearsAmount: 0.0 });
-                } catch (err: Error | unknown) {
-                  const errorMessage =
-                    err instanceof Error
-                      ? err.message
-                      : "unknown firebase ERROR!...";
-                  setLoad(false);
-                  dispatch(setAppLoadingStatus())
-                  alert(errorMessage);
-                }
-                
+                  setArrears({arrearsCount: 0, arrearsAmount: 0.0})
               }}
             >
               Clear Arrears
