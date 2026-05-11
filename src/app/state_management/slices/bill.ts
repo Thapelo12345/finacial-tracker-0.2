@@ -16,8 +16,6 @@ const initialState: Bill = {
   frenquently: "",
   status: "",
   AutoPay: false,
-  settleBill: false,
-  daysLeft: 0,
 }
 
 const billSlice = createSlice({
