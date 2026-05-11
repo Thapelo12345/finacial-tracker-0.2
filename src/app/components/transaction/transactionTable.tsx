@@ -1,5 +1,5 @@
 import TransactionCell from "@/app/components/ui/transaction/transactionCell";
-import type { RootState } from "@/app/state management/store";
+import type { RootState } from "@/app/state_management/store";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 
