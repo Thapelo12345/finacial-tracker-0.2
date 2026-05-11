@@ -6,7 +6,7 @@ import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/20/solid";
 import { SettingsContext } from "@/app/context/settingsContext";
 import { useEffect, useState, useContext } from "react";
 import { useSelector } from "react-redux";
-import type { RootState } from "@/app/state management/store";
+import type { RootState } from "@/app/state_management/store";
 import { useRouter } from "next/navigation";
 import { SignOut } from "@/app/functions/authFunctions/signOut";
 
