@@ -24,7 +24,7 @@ export default function DropDown({
         {title}
       </label>
       <select
-        className={`${exo_2.className} text-black font-semibold text-xs m-4 focus:outline-0 p-2 rounded-lg`}
+        className={`${exo_2.className}`}
         style={{
           boxShadow: "inset 2px 2px 5px #BABECC, inset -5px -5px 10px #FFF",
         }}

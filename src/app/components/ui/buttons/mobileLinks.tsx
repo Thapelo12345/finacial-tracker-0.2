@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default function MobileLinks({ pageUrl, toolTip, btnUrl, icon }: Props) {
-  const appLoading = useSelector((state: RootState)=> state.appLoadStatus)
+  const appLoading = useSelector((state: RootState)=> state.appLoadStatus.appLoadingStatus)
   const settings = useContext(SettingsContext);
   const location = usePathname();
 

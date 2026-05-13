@@ -49,10 +49,10 @@ export default async function DeleteBill(billId: number) {
       store.dispatch(getMessage("Bill deleted successfully"));
       store.dispatch(selectDialog("confirm"));
       if (store.getState().appLoadStatus.appLoadingStatus) store.dispatch(setAppLoadingStatus());
-      store.dispatch(appUpdated())
-
+      
       setTimeout(() => {
         store.dispatch(openCloseDialog());
+        store.dispatch(appUpdated())
       }, 1500);
     
     } catch (error: Error | unknown) {
